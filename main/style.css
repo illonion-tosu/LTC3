@@ -1,0 +1,52 @@
+:root {
+    --team-name-x: 48px;
+}
+
+/* Sunlight Dream */
+@font-face {
+    font-family: "Sunlight Dreams";
+    src: url("../fonts/Sunlight\ Dreams.otf")
+}
+
+/* Main */
+.main {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    top: 0;
+    left: 0;
+}
+/* Background Image */
+.background-image {
+    position: absolute;
+    width: 2345px;
+    height: 2184px;
+    background-image: url(static/background.png);
+    top: -551px;
+    left: -347px;
+}
+/* Top Banner */
+.top-banner {
+    position: absolute;
+    width: 2062px;
+    height: 395px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -120px;
+}
+
+/* Team Name */
+.team-name {
+    position: absolute;
+    top: 53px;
+    font-family: "Sunlight Dreams";
+    font-size: 48px;
+}
+.red-team-name { 
+    color: #D1ED85;
+    left: var(--team-name-x);
+}
+.blue-team-name {
+    color: #AACAF9;
+    right: var(--team-name-x);
+}
