@@ -74,6 +74,7 @@
     top: 155px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 1;
 }
 /* Gameplay Background */
 .gameplay-background {
@@ -82,4 +83,29 @@
     height: 720px;
     top: 186px;
     background-color: red;
+    z-index: 1;
+}
+
+/* Bottom Triangle */
+.bottom-triangle {
+    position: absolute;
+    bottom: 0;
+    left: 953px;
+    transform: translateX(-50%);
+    width: 535px;
+}
+.bottom-score-section {
+    position: absolute;
+    bottom: 0;
+    left: 973px;
+    transform: translateX(-50%);
+}
+.middle-line {
+    position: absolute;
+    width: 2px;
+    height: 1080px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: lightblue;
 }
