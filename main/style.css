@@ -67,3 +67,19 @@
     font-family: "Sunlight Dreams";
     font-size: 20px;
 }
+
+/* Gameplay Border */
+.gameplay-border {
+    position: absolute;
+    top: 155px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/* Gameplay Background */
+.gameplay-background {
+    position: absolute;
+    width: 1920px;
+    height: 720px;
+    top: 186px;
+    background-color: red;
+}
