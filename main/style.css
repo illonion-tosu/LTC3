@@ -118,3 +118,28 @@
 }
 .bottom-score-gradient-left { left: var(--bottom-score-gradient-x); }
 .bottom-score-gradient-right { right: var(--bottom-score-gradient-x); }
+
+/* Score Bar */
+.score-bar-leaf {
+    position: absolute;
+    bottom: 121px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+.score-bar-line {
+    position: absolute;
+    bottom: 143px;
+    background-color: #5C4C44;
+    width: 900px;
+    height: 5px;
+    z-index: 1;
+}
+.score-bar-line-left {
+    right: 50%;
+    border-radius: 2.5px 0 0 2.5px;
+}
+.score-bar-line-right {
+    left: 50%;
+    border-radius: 0 2.5px 2.5px 0;
+}
