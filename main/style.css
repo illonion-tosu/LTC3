@@ -19,8 +19,9 @@
 /* Background Image */
 .background-image {
     position: absolute;
-    width: 2345px;
+    width: 2267px;
     height: 2184px;
+    background-size: cover;
     background-image: url(static/background.png);
     top: -551px;
     left: -347px;
@@ -49,4 +50,20 @@
 .blue-team-name {
     color: #AACAF9;
     right: var(--team-name-x);
+}
+
+/* Round Name */
+.round-name-background {
+    position: absolute;
+    left: 50%;
+    top: 116px;
+    transform: translateX(-50%);
+}
+.round-name-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 121px;
+    font-family: "Sunlight Dreams";
+    font-size: 20px;
 }
