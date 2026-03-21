@@ -1,5 +1,7 @@
 :root {
     --team-name-x: 48px;
+    --team-red-color: #D1ED85;
+    --team-blue-color: #AACAF9;
     --bottom-score-gradient-x: 293px;
 }
 
@@ -45,11 +47,11 @@
     font-size: 48px;
 }
 .red-team-name { 
-    color: #D1ED85;
+    color: var(--team-red-color);
     left: var(--team-name-x);
 }
 .blue-team-name {
-    color: #AACAF9;
+    color: var(--team-blue-color);
     right: var(--team-name-x);
 }
 
@@ -142,4 +144,35 @@
 .score-bar-line-right {
     left: 50%;
     border-radius: 0 2.5px 2.5px 0;
+}
+
+/* Score Difference */
+.score-difference {
+    position: absolute;
+    bottom: 76px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Sunlight Dreams";
+    font-size: 36px;
+    color: white;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Scores */
+.score {
+    position: absolute;
+    bottom: 90px;
+    font-variant-numeric: tabular-nums;
+    font-family: "Sunlight Dreams";
+    font-size: 28px;
+}
+.score-left {
+    left: 30%;
+    transform: translateX(-50%);
+    color: var(--team-red-color);
+}
+.score-right {
+    right: 30%;
+    transform: translateX(50%);
+    color: var(--team-blue-color);
 }
