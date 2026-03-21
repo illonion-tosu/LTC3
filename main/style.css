@@ -1,5 +1,6 @@
 :root {
     --team-name-x: 48px;
+    --bottom-score-gradient-x: 293px;
 }
 
 /* Sunlight Dream */
@@ -109,3 +110,11 @@
     transform: translateX(-50%);
     background-color: lightblue;
 }
+
+/* Bottom Score Gradient */
+.bottom-score-gradient {
+    position: absolute;
+    bottom: 87px;
+}
+.bottom-score-gradient-left { left: var(--bottom-score-gradient-x); }
+.bottom-score-gradient-right { right: var(--bottom-score-gradient-x); }
