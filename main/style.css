@@ -21,6 +21,7 @@
     height: 1080px;
     top: 0;
     left: 0;
+    overflow: hidden;
 }
 /* Background Image */
 .background-image {
@@ -31,6 +32,12 @@
     background-image: url(static/background.png);
     top: -551px;
     left: -347px;
+}
+/* Video */
+video {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 /* Top Banner */
 .top-banner {
@@ -278,13 +285,6 @@
     grid-template-columns: repeat(3, 1fr);
     width: 165px;
     row-gap: 2px;
-}
-.invisible-section {
-    position: absolute;
-    top: 1080px;
-    width: 1920px;
-    height: 100px;
-    background-color: black;
 }
 
 /* Chat Display */
