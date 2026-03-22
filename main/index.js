@@ -31,6 +31,8 @@ const nowPlayingOdEl = document.getElementById("now-playing-od")
 const nowPlayingLenEl = document.getElementById("now-playing-len")
 let currentMapId, currentMapChecksum
 
+// Score Section
+const scoreSectionEl = document.getElementById("score-section")
 // Score Texts
 const scoreDifferenceEl = document.getElementById("score-difference")
 const redScoreEl = document.getElementById("red-score")
@@ -52,6 +54,7 @@ const scoreBarLineRightEl = document.getElementById("score-bar-line-right")
 const bottomScoreBackgroundEl = document.getElementById("bottom-score-background")
 
 // Chat information
+const chatDisplayEl = document.getElementById("chat-display")
 const chatDisplayContainerEl = document.getElementById("chat-display-container")
 let chatLen
 
@@ -119,6 +122,13 @@ socket.onmessage = event => {
     // Score Visibility
     if (scoreVisible !== data.tourney.scoreVisible) {
         scoreVisible = data.tourney.scoreVisible
+        if (scoreVisible) {
+            chatDisplayEl.style.opacity = 0
+            scoreSectionEl.style.opacity = 1
+        } else {
+            chatDisplayEl.style.opacity = 1
+            scoreSectionEl.style.opacity = 0
+        }
     }
 
     // Set score details

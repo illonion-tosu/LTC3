@@ -133,7 +133,13 @@ video {
 .gameplay-border-inner-right { right: var(--gameplay-border-inner-x); }
 .gameplay-border-inner-left { left: var(--gameplay-border-inner-x); }
 
-/* Bottom Triangle */
+/* Score Section */
+
+#score-section {
+    opacity: 1;
+    transition: 500ms ease-in-out;
+}
+/* Bottom Background */
 .bottom-score-background {
     position: absolute;
     bottom: 0;
@@ -305,6 +311,8 @@ video {
     border: 5px solid var(--gold-color);
     border-top: 0;
     border-bottom: 0;
+    opacity: 1;
+    transition: 500ms ease-in-out;
 }
 .chat-display-background {
     position: absolute;
