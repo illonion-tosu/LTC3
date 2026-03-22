@@ -51,6 +51,10 @@ const scoreBarLineRightEl = document.getElementById("score-bar-line-right")
 // Bottom Score Background
 const bottomScoreBackgroundEl = document.getElementById("bottom-score-background")
 
+// Chat information
+const chatDisplayContainerEl = document.getElementById("chat-display-container")
+let chatLen
+
 // Socket
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
@@ -136,5 +140,9 @@ socket.onmessage = event => {
         if (currentRedScore > currentBlueScore) imageText = "red"
         else if (currentBlueScore > currentRedScore) imageText = "blue"
         bottomScoreBackgroundEl.setAttribute("src", `static/bottom-score-background/${imageText}-winning-background.png`)
+    } else {
+        if (chatLen !== data.tourney.chat.length) {
+            chatLen = updateChat(chatLen, data.tourney.chat, chatDisplayContainerEl)
+        }
     }
 }   
