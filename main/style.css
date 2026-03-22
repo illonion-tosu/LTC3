@@ -2,6 +2,7 @@
     --team-name-x: 48px;
     --team-red-color: #D1ED85;
     --team-blue-color: #AACAF9;
+    --gameplay-border-inner-x: 57.1px;
     --bottom-score-gradient-x: 293px;
 }
 
@@ -82,12 +83,24 @@
 /* Gameplay Background */
 .gameplay-background {
     position: absolute;
-    width: 1920px;
+    width: 1795.2px;
     height: 720px;
     top: 186px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: red;
     z-index: 1;
 }
+/* Gameplay Border Inner */
+.gameplay-border-inner {
+    position: absolute;
+    background-color: #FFF6C1;
+    width: 5px;
+    height: 720px;
+    top: 186px;
+}
+.gameplay-border-inner-right { right: var(--gameplay-border-inner-x); }
+.gameplay-border-inner-left { left: var(--gameplay-border-inner-x); }
 
 /* Bottom Triangle */
 .bottom-triangle {
