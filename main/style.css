@@ -263,6 +263,12 @@ video {
     font-family: "Josefin Sans";
 }
 /* Metadata */
+.now-playing-metadata {
+    white-space: nowrap;
+    max-width: 164px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .now-playing-title-difficulty {
     top: 12px;
     letter-spacing: -1.25px;
