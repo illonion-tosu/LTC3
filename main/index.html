@@ -88,7 +88,7 @@
         <div class="gameplay-border-inner gameplay-border-inner-right"></div>
 
         <!-- Bottom Score Section -->
-        <img class="bottom-score-background" src="static/bottom-score-background/blue-winning-background.png">
+        <img class="bottom-score-background" id="bottom-score-background" src="static/bottom-score-background/blue-winning-background.png">
         <img class="bottom-score-section" src="static/bottom-score-background/bottom-score-border.png">
 
         <!-- Bottom Score Gradient -->
@@ -97,38 +97,21 @@
 
         <!-- Score Bar -->
         <img class="score-bar-leaf" src="static/score-difference-leaf.png">
-        <div class="score-bar-line score-bar-line-left"></div>
-        <div class="score-bar-line score-bar-line-right"></div>
+        <div class="score-bar-line score-bar-line-left" id="score-bar-line-left"></div>
+        <div class="score-bar-line score-bar-line-right" id="score-bar-line-right"></div>
 
         <!-- Score Differnce -->
-        <div class="score-difference">999,999,999</div>
+        <div class="score-difference" id="score-difference"></div>
 
         <!-- Scores -->
-        <div class="score score-left">999,999,999</div>
-        <div class="score score-right">999,999,999</div>
+        <div class="score red-score" id="red-score"></div>
+        <div class="score blue-score" id="blue-score"></div>
 
         <!-- Chat Display -->
-        <!-- <div class="chat-display">
+        <div class="chat-display">
             <div class="chat-display-background"></div>
-            <div class="chat-display-container">
-                <div class="message-container">
-                    <div class="message-name right">Fairy Bread:</div>
-                    <div class="message-content">Hello! My name is Fairy Bread</div>
-                </div>
-                <div class="message-container">
-                    <div class="message-name left">Fairy Bread:</div>
-                    <div class="message-content">Hello! My name is Fairy Bread</div>
-                </div>
-                <div class="message-container">
-                    <div class="message-name bot">Fairy Bread:</div>
-                    <div class="message-content">Hello! My name is Fairy Bread</div>
-                </div>
-                <div class="message-container">
-                    <div class="message-name unknown">Fairy Bread:</div>
-                    <div class="message-content">Hello! My name is Fairy Bread</div>
-                </div>
-            </div>
-        </div> -->
+            <div class="chat-display-container"></div>
+        </div>
 
         <!-- Now Playing Circle -->
         <div class="now-playing-bg" id="now-playing-bg"></div>

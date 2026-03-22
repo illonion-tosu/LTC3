@@ -1,4 +1,5 @@
 import { findBeatmap, loadBeatmaps } from "../_shared/core/beatmaps.js"
+import { updateChat } from "../_shared/core/chat.js"
 import { delay, getModDetails, setLengthDisplay } from "../_shared/core/utils.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
@@ -29,6 +30,26 @@ const nowPlayingArEl = document.getElementById("now-playing-ar")
 const nowPlayingOdEl = document.getElementById("now-playing-od")
 const nowPlayingLenEl = document.getElementById("now-playing-len")
 let currentMapId, currentMapChecksum
+
+// Score Texts
+const scoreDifferenceEl = document.getElementById("score-difference")
+const redScoreEl = document.getElementById("red-score")
+const blueScoreEl = document.getElementById("blue-score")
+let currentRedScore, currentBlueScore
+// Animations
+const animations = {
+    // Score
+    "redScore": new CountUp(redScoreEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
+    "blueScore": new CountUp(blueScoreEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
+    "scoreDifference": new CountUp(scoreDifferenceEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
+}
+// Score visible
+let scoreVisible
+// Score Bar Lines
+const scoreBarLineLeftEl = document.getElementById("score-bar-line-left")
+const scoreBarLineRightEl = document.getElementById("score-bar-line-right")
+// Bottom Score Background
+const bottomScoreBackgroundEl = document.getElementById("bottom-score-background")
 
 // Socket
 const socket = createTosuWsSocket()
@@ -90,4 +111,30 @@ socket.onmessage = event => {
         nowPlayingOdEl.textContent = Math.round(data.beatmap.stats.od.converted * 10) / 10
         nowPlayingLenEl.textContent = setLengthDisplay(Math.round((data.beatmap.time.lastObject - data.beatmap.time.firstObject) / 1000))
     }
-}
+
+    // Score Visibility
+    if (scoreVisible !== data.tourney.scoreVisible) {
+        scoreVisible = data.tourney.scoreVisible
+    }
+
+    // Set score details
+    if (scoreVisible) {
+        currentRedScore = data.tourney.totalScore.left
+        currentBlueScore = data.tourney.totalScore.right
+
+        // Animations
+        animations.redScore.update(currentRedScore)
+        animations.blueScore.update(currentBlueScore)
+        animations.scoreDifference.update(Math.abs(currentRedScore - currentBlueScore))
+
+        // Score Bar Line
+        scoreBarLineLeftEl.style.width = `${currentRedScore / 2000000 * 960}px`
+        scoreBarLineRightEl.style.width = `${currentBlueScore / 2000000 * 960}px`
+
+        // Show who is winning
+        let imageText = "none"
+        if (currentRedScore > currentBlueScore) imageText = "red"
+        else if (currentBlueScore > currentRedScore) imageText = "blue"
+        bottomScoreBackgroundEl.setAttribute("src", `static/bottom-score-background/${imageText}-winning-background.png`)
+    }
+}   

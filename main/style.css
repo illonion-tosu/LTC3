@@ -181,6 +181,7 @@ video {
     width: 900px;
     height: 5px;
     z-index: 1;
+    transition: 500ms ease-in-out;
 }
 .score-bar-line-left {
     right: 50%;
@@ -211,12 +212,12 @@ video {
     font-family: "Sunlight Dreams";
     font-size: 28px;
 }
-.score-left {
+.red-score {
     left: 30%;
     transform: translateX(-50%);
     color: var(--team-red-color);
 }
-.score-right {
+.blue-score {
     right: 30%;
     transform: translateX(50%);
     color: var(--team-blue-color);
