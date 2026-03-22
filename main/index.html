@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <!-- Styling -->
     <link rel="stylesheet" href="style.css"></head>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="main">
@@ -47,10 +53,23 @@
         <!-- Now Playing Circle -->
         <div class="invisible-section"></div>
         <div class="now-playing-bg"></div>
-        <img class="now-playing-circle" src="static/now-playing-circle.png">
+        <img class="now-playing-circle" src="static/now-playing/now-playing-circle.png">
 
         <!-- Now Playing Details -->
-
+        <div class="now-playing-details">
+            <img class="now-playing-rectangle" src="static/now-playing/now-playing-rectangle.png">
+            <div class="now-playing-data-left now-playing-title-difficulty"><span id="now-playing-title">TITLE</span> <span id="now-playing-difficulty">[DIFFICULTY]</span></div>
+            <div class="now-playing-data-left now-playing-artist">Artist</div>
+            <img class="now-playing-data-left now-playing-stem" src="static/now-playing/now-playing-stem.png">
+            <div class="now-playing-data-left now-playing-stats">
+                <div>SR: <span id="now-playing-sr">9.99</span>*</div>
+                <div>CS: <span id="now-playing-sr">9.9</span></div>
+                <div>BPM: <span id="now-playing-sr">999</span></div>
+                <div>AR: <span id="now-playing-sr">10</span></div>
+                <div>OD: <span id="now-playing-sr">9.9</span></div>
+                <div>LEN: <span id="now-playing-sr">9999</span></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
