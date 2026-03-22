@@ -1,4 +1,14 @@
+import { loadBeatmaps } from "../_shared/core/beatmaps.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
+
+// Load Beatmaps
+const roundNameTextEl = document.getElementById("round-name-text")
+let allBeatmaps
+Promise.all([loadBeatmaps()]).then(([beatmaps]) => {
+    // Load beatmaps
+    allBeatmaps = beatmaps.beatmaps
+    roundNameTextEl.textContent = beatmaps.roundName
+})
 
 // Teams
 const redTeamNameEl = document.getElementById("red-team-name")
@@ -11,6 +21,7 @@ socket.onmessage = event => {
     const data = JSON.parse(event.data)
     console.log(data)
 
+    // Team Names
     if (currentRedTeamName !== data.tourney.team.left) {
         currentRedTeamName = data.tourney.team.left
         redTeamNameEl.textContent = currentRedTeamName
