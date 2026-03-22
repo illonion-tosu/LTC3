@@ -12,6 +12,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
+    <script src="../_shared/deps/countUp.js"></script>
 </head>
 <body>
     <div class="main">
@@ -21,8 +26,8 @@
         <img class="top-banner" src="static/top-banner.png">
 
         <!-- Team Name -->
-        <div class="team-name red-team-name">Long team name here</div>
-        <div class="team-name blue-team-name">Long team name here</div>
+        <div class="team-name red-team-name" id="red-team-name">Long team name here</div>
+        <div class="team-name blue-team-name" id="blue-team-name">Long team name here</div>
 
         <!-- Stars -->
         <div class="star-container red-star-container">
@@ -145,5 +150,7 @@
             </div>
         </div>
     </div>
+
+    <script src="index.js" type="module"></script>
 </body>
 </html>
