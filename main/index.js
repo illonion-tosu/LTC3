@@ -1,4 +1,5 @@
-import { loadBeatmaps } from "../_shared/core/beatmaps.js"
+import { findBeatmap, loadBeatmaps } from "../_shared/core/beatmaps.js"
+import { delay, getModDetails, setLengthDisplay } from "../_shared/core/utils.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 // Load Beatmaps
@@ -13,7 +14,21 @@ Promise.all([loadBeatmaps()]).then(([beatmaps]) => {
 // Teams
 const redTeamNameEl = document.getElementById("red-team-name")
 const blueTeamNameEl = document.getElementById("blue-team-name")
-let currentRedTeamName, currentBlueTeamName
+let currentRedTeamName, currentBlueTeamName, foundBeatmapInMappool
+
+// Now Playing Detrails
+const nowPlayingBgEl = document.getElementById("now-playing-bg")
+const nowPlayingTitleEl = document.getElementById("now-playing-title")
+const nowPlayingDifficultyEl = document.getElementById("now-playing-difficulty")
+const nowPlayingArtistEl = document.getElementById("now-playing-artist")
+// Now Playing Stats
+const nowPlayingSrEl = document.getElementById("now-playing-sr")
+const nowPlayingCsEl = document.getElementById("now-playing-cs")
+const nowPlayingBpmEl = document.getElementById("now-playing-bpm")
+const nowPlayingArEl = document.getElementById("now-playing-ar")
+const nowPlayingOdEl = document.getElementById("now-playing-od")
+const nowPlayingLenEl = document.getElementById("now-playing-len")
+let currentMapId, currentMapChecksum
 
 // Socket
 const socket = createTosuWsSocket()
@@ -29,5 +44,50 @@ socket.onmessage = event => {
     if (currentBlueTeamName !== data.tourney.team.right) {
         currentBlueTeamName = data.tourney.team.right
         blueTeamNameEl.textContent = currentBlueTeamName
+    }
+
+    // Now Playing
+    if ((currentMapId !== data.beatmap.id || currentMapChecksum !== data.beatmap.checksum) && allBeatmaps) {
+        currentMapId = data.beatmap.id
+        currentMapChecksum = data.beatmap.checksum
+        foundBeatmapInMappool = undefined
+
+        // Now Playing Details
+        nowPlayingBgEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${data.beatmap.set}/covers/cover.jpg")`
+        nowPlayingTitleEl.textContent = data.beatmap.title
+        nowPlayingDifficultyEl.textContent = data.beatmap.version
+        nowPlayingArtistEl.textContent = data.beatmap.artist
+
+        foundBeatmapInMappool = findBeatmap(currentMapId)
+        if (foundBeatmapInMappool) {
+            const mapDetails = getModDetails(
+                foundBeatmapInMappool.diff_size,
+                foundBeatmapInMappool.diff_approach,
+                foundBeatmapInMappool.diff_overall,
+                foundBeatmapInMappool.bpm,
+                foundBeatmapInMappool.totalLength,
+                foundBeatmapInMappool.mod
+            )
+
+            nowPlayingSrEl.textContent = Math.round(Number(foundBeatmapInMappool.difficultyrating) * 100) / 100
+            nowPlayingCsEl.textContent = Math.round(mapDetails.cs * 10) / 10
+            nowPlayingBpmEl.textContent =Math.round(mapDetails.bpm)
+            nowPlayingArEl.textContent = Math.round(mapDetails.ar * 10) / 10
+            nowPlayingOdEl.textContent = Math.round(mapDetails.od * 10) / 10
+            nowPlayingLenEl.textContent = setLengthDisplay(mapDetails.len)
+        } else {
+            delay(250)
+        }
+    }
+
+    // Found Beatmap In Mappool
+    if (!foundBeatmapInMappool) {
+        foundBeatmapInMappool = true
+        nowPlayingSrEl.textContent = Math.round(data.beatmap.stats.stars.total * 10) / 10
+        nowPlayingCsEl.textContent = Math.round(data.beatmap.stats.cs.converted * 10) / 10
+        nowPlayingBpmEl.textContent = Math.round(data.beatmap.stats.bpm.common)
+        nowPlayingArEl.textContent = Math.round(data.beatmap.stats.ar.converted * 10) / 10
+        nowPlayingOdEl.textContent = Math.round(data.beatmap.stats.od.converted * 10) / 10
+        nowPlayingLenEl.textContent = setLengthDisplay(Math.round((data.beatmap.time.lastObject - data.beatmap.time.firstObject) / 1000))
     }
 }

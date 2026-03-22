@@ -20,3 +20,23 @@ export function setLengthDisplay(seconds) {
 
 // Sleep
 export const delay = async time => new Promise(resolve => setTimeout(resolve, time))
+
+// Get Mods
+export function getModDetails(cs, ar, od, bpm, len, mod) {
+    switch (mod) {
+        case "HR":
+            cs = Math.min(Math.round(Number(cs) * 1.3 * 10) / 10, 10)
+            ar = Math.min(Math.round(Number(ar) * 1.4 * 10) / 10, 10)
+            od = Math.min(Math.round(Number(od) * 1.4 * 10) / 10, 10)
+            break
+        case "DT":
+            if (ar > 5) ar = Math.round((((1200 - (( 1200 - (ar - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
+            else ar = Math.round((1800 - ((1800 - ar * 120) * 2 / 3)) / 120 * 10) / 10
+            od = Math.round((79.5 - (( 79.5 - 6 * od) * 2 / 3)) / 6 * 10) / 10
+            bpm = Math.round(bpm * 1.5)
+            len = Math.round(len / 1.5)
+            break
+    }
+
+    return { cs, ar, od, bpm, len, mod }
+}

@@ -65,7 +65,7 @@ async function getBeatmaps() {
             // "tags": responseJson[0].tags,
             "title": responseJson[0].title,
             // "title_unicode": responseJson[0].title_unicode,
-            // "total_length": responseJson[0].total_length,
+            "total_length": responseJson[0].total_length,
             "version": responseJson[0].version,
             // "video": responseJson[0].video
         }
