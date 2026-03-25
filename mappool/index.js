@@ -1,4 +1,9 @@
+import { setDefaultStarCount, toggleStars, updateStarCount } from "../_shared/core/stars.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
+
+// Team Stars
+const leftTeamStarContainerEl = document.getElementById("red-star-container")
+const rightTeamStarContainerEl = document.getElementById("blue-star-container")
 
 // Get Beatmaps
 const roundNameEl = document.getElementById("round-name")
@@ -30,6 +35,8 @@ async function getBeatmaps() {
     }
     currentFirstTo = Math.ceil(currentBestOf / 2)
 
+    setDefaultStarCount(currentBestOf, leftTeamStarContainerEl, rightTeamStarContainerEl)
+
     for (let i = 0; i < currentFirstTo - 1; i++) {
         createTeamPickWrapper("left")
         createTeamPickWrapper("right")
@@ -54,8 +61,6 @@ async function getBeatmaps() {
         teamPickWrapper.append(teamPickBackgroundImage, teamPickOutline, teamPickWinnerCrown, teamPickModId)
         document.getElementById(`${side}-team-pick-container`).append(teamPickWrapper)
     }
-
-    createStarDisplay()
 
     for (let i = 0; i < allBeatmaps.length; i++) {
         preloadImagesEl.setAttribute("srx", `https://assets.ppy.sh/beatmaps/${allBeatmaps[i].beatmapset_id}/covers/cover.jpg`)
@@ -153,76 +158,6 @@ function mapClickEvent(event) {
         currentPickMap = currentMap
 
         this.dataset.pickTeam = "true"
-    }
-}
-
-// Team Stars
-const leftTeamStarContainerEl = document.getElementById("red-star-container")
-const rightTeamStarContainerEl = document.getElementById("blue-star-container")
-/**
- * Creates the star display
- */
-function createStarDisplay() {
-    leftTeamStarContainerEl.innerHTML = ""
-    rightTeamStarContainerEl.innerHTML = ""
-
-    let i = 0
-    for (i; i < currentLeftStars; i++) createStar("green", "fill")
-    for (i; i < currentFirstTo; i++) createStar("green", "empty")
-    i = 0
-    for (i; i < currentRightStars; i++) createStar("blue", "fill")
-    for (i; i < currentFirstTo; i++) createStar("blue", "empty")
-
-
-    function createStar(colour, status) {
-        const wrapper = document.createElement("div")
-        wrapper.classList.add("team-star-wrapper")
-
-        let image
-        if (status === "fill") {
-            image = document.createElement("img")
-            image.setAttribute("src", `../_shared/assets/${colour} star.png`)
-        } else {
-            image = document.createElement("div")
-            image.classList.add("no-star", (colour === "green")? "no-left-star" : "no-right-star")
-        }
-
-        wrapper.append(image)
-        if (colour === "green") leftTeamStarContainerEl.append(wrapper)
-        else rightTeamStarContainerEl.append(wrapper)
-    }
-}
-
-/**
- * Updates the star count
- * @param {string} team - Left or right side
- * @param {string} action - Plus or minus
- */
-function updateStarCount(team, action) {
-    if (team === "red" && action === "plus") currentLeftStars++
-    else if (team === "red" && action === "minus") currentLeftStars--
-    else if (team === "blue" && action === "plus") currentRightStars++
-    else if (team === "blue" && action === "minus") currentRightStars--
-
-    if (currentLeftStars > currentFirstTo) currentLeftStars = currentFirstTo
-    if (currentLeftStars < 0) currentLeftStars = 0
-    if (currentRightStars > currentFirstTo) currentRightStars = currentFirstTo
-    if (currentRightStars < 0) currentRightStars = 0
-
-    createStarDisplay()
-
-    document.cookie = `currentLeftStars=${currentLeftStars}; path=/`
-    document.cookie = `currentRightStars=${currentRightStars}; path=/`
-
-    if (currentLeftStars > currentRightStars) {
-        document.cookie=`currentWinningTeam=${leftTeamName}; path=/`
-        document.cookie=`currentWinningColour=red; path=/`
-    } else if (currentLeftStars < currentRightStars) {
-        document.cookie=`currentWinningTeam=${rightTeamName}; path=/`
-        document.cookie=`currentWinningColour=blue; path=/`
-    } else {
-        document.cookie=`currentWinningTeam=none; path=/`
-        document.cookie=`currentWinningColour=none; path=/`
     }
 }
 
@@ -369,7 +304,7 @@ socket.onmessage = event => {
             }
 
             if (!winner) return
-            updateStarCount(winner, "plus")
+            updateStarCount(winner, "plus", leftTeamStarContainerEl, rightTeamStarContainerEl)
 
             // Set winner on tile
             if (!currentPickTile) return
@@ -396,23 +331,24 @@ function toggleAutopick() {
     toggleAutopickEl.innerText = `Toggle Autopick: ${isAutopickOn? "ON" : "OFF"}`
 }
 
-// Toggle Stars
+// // Toggle Stars
 const toggleStarsEl = document.getElementById("toggle-stars")
-let isStarOn = true
-function toggleStars() {
-    isStarOn = !isStarOn
-    if (isStarOn) {
-        leftTeamStarContainerEl.style.display = "flex"
-        rightTeamStarContainerEl.style.display = "flex"
-        toggleStarsEl.innerText = "Toggle Stars: ON"
-    } else {
-        leftTeamStarContainerEl.style.display = "none"
-        rightTeamStarContainerEl.style.display = "none"
-        toggleStarsEl.innerText = "Toggle Stars: OFF"
-    }
-    document.cookie = `toggleStars=${isStarOn}; path=/`
-}
-document.cookie = `toggleStars=${isStarOn}; path=/`
+const toggleStarsTextEl = document.getElementById("toggle-stars-text")
+// let isStarOn = true
+// function toggleStars() {
+//     isStarOn = !isStarOn
+//     if (isStarOn) {
+//         leftTeamStarContainerEl.style.display = "flex"
+//         rightTeamStarContainerEl.style.display = "flex"
+//         toggleStarsEl.innerText = "Toggle Stars: ON"
+//     } else {
+//         leftTeamStarContainerEl.style.display = "none"
+//         rightTeamStarContainerEl.style.display = "none"
+//         toggleStarsEl.innerText = "Toggle Stars: OFF"
+//     }
+//     document.cookie = `toggleStars=${isStarOn}; path=/`
+// }
+// document.cookie = `toggleStars=${isStarOn}; path=/`
 
 // Mappool Management System
 const mappoolManagementSystemEl = document.getElementById("mappool-management-system")
@@ -460,10 +396,10 @@ function mappoolManagementSetAction() {
         const totalBans = currentLeftBanNumberTotal + currentRightBanNumberTotal
         const mappoolManagementWhoseBanSelectSize = (totalBans < 2 && mappoolManagementAction === "removeBan")? 2 : totalBans
         mappoolManagementWhoseBanSelect.setAttribute("size", mappoolManagementWhoseBanSelectSize)
-        mappoolManagementWhoseBanSelect.setAttribute("onchange", "mappoolManagementSetWhoseBan()")
+        mappoolManagementWhoseBanSelect.addEventListener("change", mappoolManagementSetWhoseBan)
         // Get Bans
         let i = 0
-        for (i = 0; i < currentLeftBanNumberTotal; i++) {
+        for (let i = 0; i < currentLeftBanNumberTotal; i++) {
             const mappoolManagementWhoseBanOption = document.createElement("option")
             mappoolManagementWhoseBanOption.setAttribute("value", `green|${i}`)
             if (i < leftTeamBanContainerEl.childElementCount) mappoolManagementWhoseBanOption.innerText = `Green Ban ${i + 1} - ${leftTeamBanContainerEl.children[i].innerText}`
@@ -471,7 +407,7 @@ function mappoolManagementSetAction() {
 
             mappoolManagementWhoseBanSelect.append(mappoolManagementWhoseBanOption)
         }
-        for (i = 0; i < currentRightBanNumberTotal; i++) {
+        for (let i = 0; i < currentRightBanNumberTotal; i++) {
             const mappoolManagementWhoseBanOption = document.createElement("option")
             mappoolManagementWhoseBanOption.setAttribute("value", `blue|${i}`)
             if (i < rightTeamBanContainerEl.childElementCount) mappoolManagementWhoseBanOption.innerText = `Blue Ban ${i + 1} - ${rightTeamBanContainerEl.children[i].innerText}`
@@ -516,10 +452,10 @@ function mappoolManagementSetAction() {
         mappoolManagementWhosePickSelect.classList.add("sidebar-select")
         mappoolManagementWhosePickSelect.setAttribute("id", "mappool-management-set-whose-pick")
         mappoolManagementWhosePickSelect.setAttribute("size", (currentFirstTo - 1) * 2)
-        mappoolManagementWhosePickSelect.setAttribute("onchange", "mappoolManagementSetWhosePick()")
+        mappoolManagementWhosePickSelect.addEventListener("change", mappoolManagementSetWhosePick)
 
         // Create options
-        for (i = 0; i < leftTeamPickContainerEl.childElementCount; i++) {
+        for (let i = 0; i < leftTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
             mappoolManagementWhosePickOption.setAttribute("value", `green|${i}`)
             if (leftTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1} - ${leftTeamPickContainerEl.children[i].children[3].innerText}`
@@ -527,7 +463,7 @@ function mappoolManagementSetAction() {
 
             mappoolManagementWhosePickSelect.append(mappoolManagementWhosePickOption)
         }
-        for (i = 0; i < rightTeamPickContainerEl.childElementCount; i++) {
+        for (let i = 0; i < rightTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
             mappoolManagementWhosePickOption.setAttribute("value", `blue|${i}`)
             if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[3].innerText}`
@@ -571,10 +507,10 @@ function mappoolManagementSetAction() {
         mappoolManagementWhosePickSelect.classList.add("sidebar-select")
         mappoolManagementWhosePickSelect.setAttribute("id", "mappool-management-set-whose-pick")
         mappoolManagementWhosePickSelect.setAttribute("size", (currentFirstTo - 1) * 2)
-        mappoolManagementWhosePickSelect.setAttribute("onchange", "mappoolManagementSetWhosePick()")
+        mappoolManagementWhosePickSelect.addEventListener("change", mappoolManagementSetWhosePick)
 
         // Create options
-        for (i = 0; i < leftTeamPickContainerEl.childElementCount; i++) {
+        for (let i = 0; i < leftTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
             mappoolManagementWhosePickOption.setAttribute("value", `green|${i}`)
             if (leftTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1} - ${leftTeamPickContainerEl.children[i].children[3].innerText}`
@@ -582,7 +518,7 @@ function mappoolManagementSetAction() {
 
             mappoolManagementWhosePickSelect.append(mappoolManagementWhosePickOption)
         }
-        for (i = 0; i < rightTeamPickContainerEl.childElementCount; i++) {
+        for (let i = 0; i < rightTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
             mappoolManagementWhosePickOption.setAttribute("value", `blue|${i}`)
             if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[3].innerText}`
@@ -602,7 +538,7 @@ function mappoolManagementSetAction() {
             const mappoolManagementWhichTeamContainer = document.createElement("select")
             mappoolManagementWhichTeamContainer.classList.add("sidebar-select")
             mappoolManagementWhichTeamContainer.setAttribute("id", "mappool-management-set-which-team")
-            mappoolManagementWhichTeamContainer.setAttribute("onchange", "mappoolManagementSetWhichTeam()")
+            mappoolManagementWhichTeamContainer.addEventListener("change", mappoolManagementSetWhichTeam)
             mappoolManagementWhichTeamContainer.setAttribute("size", 2)
 
             const mappoolManagementWhichTeamOptionOne = document.createElement("option")
@@ -892,3 +828,22 @@ function mappoolManagementRemoveWinner() {
     currentTile.children[2].setAttribute("src", "")
 
 }
+
+// Buttons
+const updateStarRedMinusEl = document.getElementById("update-star-red-minus")
+const updateStarRedPlusEl = document.getElementById("update-star-red-plus")
+const updateStarBlueMinusEl = document.getElementById("update-star-blue-minus")
+const updateStarBluePlusEl = document.getElementById("update-star-blue-plus")
+const updateNextAutopickerRedEl = document.getElementById("update-next-autopicker-red")
+const updateNextAutopickerBlueEl = document.getElementById("update-next-autopicker-blue")
+document.addEventListener("DOMContentLoaded", () => {
+    updateStarRedMinusEl.addEventListener("click", () => updateStarCount("red", "minus", leftTeamStarContainerEl, rightTeamStarContainerEl))
+    updateStarRedPlusEl.addEventListener("click", () => updateStarCount("red", "plus", leftTeamStarContainerEl, rightTeamStarContainerEl))
+    updateStarBlueMinusEl.addEventListener("click", () => updateStarCount("blue", "minus", leftTeamStarContainerEl, rightTeamStarContainerEl))
+    updateStarBluePlusEl.addEventListener("click", () => updateStarCount("blue", "plus", leftTeamStarContainerEl, rightTeamStarContainerEl))
+    updateNextAutopickerRedEl.addEventListener("click", () => updateNextAutoPicker('red'))
+    updateNextAutopickerBlueEl.addEventListener("click", () => updateNextAutoPicker('blue'))
+    toggleAutopickEl.addEventListener("click", toggleAutopick)
+    toggleStarsEl.addEventListener("click", () => toggleStars(toggleStarsTextEl, toggleStarsEl, leftTeamStarContainerEl, rightTeamStarContainerEl))
+    mappoolManagementSetActionEl.addEventListener("click", mappoolManagementSetAction)
+})

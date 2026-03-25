@@ -99,7 +99,7 @@ function createStarImage(status) {
     const starWrapper = document.createElement("div")
     starWrapper.classList.add("star-wrapper")
     const image = document.createElement("img")
-    image.setAttribute("src", `static/stars/star/star-${status}.png`)
+    image.setAttribute("src", `../_shared/assets/stars/star-${status}.png`)
     starWrapper.append(image)
     return starWrapper
 }

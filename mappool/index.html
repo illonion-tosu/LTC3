@@ -108,18 +108,18 @@
             <div class="sidebar-section">
                 <div class="sidebar-title">Star Control</div>
                 <div class="sidebar-button-container">
-                    <button onclick="updateStarCount('red','minus')">Red --</button>
-                    <button onclick="updateStarCount('red','plus')">Red ++</button>
-                    <button onclick="updateStarCount('blue','minus')">Blue --</button>
-                    <button onclick="updateStarCount('blue','plus')">Blue ++</button>
+                    <button id="update-star-red-minus">Green --</button>
+                    <button id="update-star-red-plus">Green ++</button>
+                    <button id="update-star-blue-minus">Blue --</button>
+                    <button id="update-star-blue-plus">Blue ++</button>
                 </div>
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-title">Mappool</div>
                 <div class="sidebar-text">
-                    Left Click (LC) = Red Pick<br>
+                    Left Click (LC) = Green Pick<br>
                     Right Click (RC) = Blue Pick<br>
-                    Ctrl + LC = Red Ban<br>
+                    Ctrl + LC = Green Ban<br>
                     Ctrl + RC = Blue Ban
                  </div>
                 <div class="sidebar-button-container" id="sidebar-mappool-container"></div>
@@ -128,9 +128,9 @@
                 <div class="sidebar-title">Next Picker</div>
                 <div class="sidebar-text" id="next-auto-picker-team"></div>
                 <div class="sidebar-button-container">
-                    <button onclick="updateNextAutoPicker('red')">Left</button>
-                    <button onclick="updateNextAutoPicker('blue')">Right</button>
-                    <button onclick="toggleAutopick()" class="full-length-button" id="toggle-autopick">Toggle Autopick: OFF</button>
+                    <button id="update-next-autopicker-red">Left</button>
+                    <button id="update-next-autopicker-blue">Right</button>
+                    <button class="full-length-button" id="toggle-autopick">Toggle Autopick: OFF</button>
                 </div>
             </div>
         </section>
@@ -139,7 +139,7 @@
             <div class="sidebar-section">
                 <div class="sidebar-title">Set Star Status</div>
                 <div class="sidebar-button-container">
-                    <button onclick="toggleStars()" class="full-length-button"  id="toggle-stars">Toggle Stars: ON</button>
+                    <button class="full-length-button" id="toggle-stars">Toggle Stars: <span id="toggle-stars-text">ON</span></button>
                 </div>
             </div>
             <div class="sidebar-section" id="mappool-management-system">
@@ -147,7 +147,7 @@
                 <div class="sidebar-text">
                     Only to be used in case<br>things go wrong!
                 </div>
-                <select class="sidebar-select" id="mappool-management-set-action" size="6" onchange="mappoolManagementSetAction()">
+                <select class="sidebar-select" id="mappool-management-set-action" size="6">
                     <option value="setBan">Set Ban</option>
                     <option value="removeBan">Remove Ban</option>
                     <option value="setPick">Set Pick</option>
