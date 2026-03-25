@@ -1,3 +1,5 @@
+import { createTosuWsSocket } from "../_shared/core/websocket.js"
+
 // Get Beatmaps
 const roundNameEl = document.getElementById("round-name")
 const sidebarMappoolContainerEl = document.getElementById("sidebar-mappool-container")
@@ -155,8 +157,8 @@ function mapClickEvent(event) {
 }
 
 // Team Stars
-const leftTeamStarContainerEl = document.getElementById("left-team-star-container")
-const rightTeamStarContainerEl = document.getElementById("right-team-star-container")
+const leftTeamStarContainerEl = document.getElementById("red-star-container")
+const rightTeamStarContainerEl = document.getElementById("blue-star-container")
 /**
  * Creates the star display
  */

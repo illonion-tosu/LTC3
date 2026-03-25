@@ -8,21 +8,6 @@
     --bottom-score-gradient-x: 293px;
 }
 
-/* Sunlight Dream */
-@font-face {
-    font-family: "Sunlight Dreams";
-    src: url("../fonts/Sunlight\ Dreams.otf")
-}
-
-/* Main */
-.main {
-    position: absolute;
-    width: 1920px;
-    height: 1080px;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-}
 /* Background Image */
 .background-image {
     position: absolute;
@@ -33,12 +18,7 @@
     top: -551px;
     left: -347px;
 }
-/* Video */
-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+
 /* Top Banner */
 .top-banner {
     position: absolute;

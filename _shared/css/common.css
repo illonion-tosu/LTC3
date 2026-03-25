@@ -1,0 +1,45 @@
+/* Sunlight Dream */
+@font-face {
+    font-family: "Sunlight Dreams";
+    src: url("../../fonts/Sunlight\ Dreams.otf")
+}
+
+/* Video */
+video {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Main */
+.main {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    font-family: "Sunlight Dreams";
+}
+
+/* Star Container */
+.star-container {
+    position: absolute;
+    top: 107px;
+    display: flex;
+    gap: 16px;
+}
+.red-star-container { left: var(--star-container-x); }
+.blue-star-container {
+    right: var(--star-container-x);
+    flex-direction: row-reverse;
+}
+/* Star Wrapper */
+.star-wrapper {
+    --dimension: 38px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

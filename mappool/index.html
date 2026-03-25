@@ -5,43 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gameplay</title>
 
-    <link rel="stylesheet" href="../_shared/shared.css">
-    <link rel="stylesheet" href="style.css">
+    <!-- Styling -->
+    <link rel="stylesheet" href="../_shared/css/common.css">
+    <link rel="stylesheet" href="style.css"></head>
+
+    <!-- Scripts -->
+    <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
 </head>
 <body>
     <video autoplay loop muted>
-        <source src="static/background.webm">
+        <source src="static/background.mp4">
     </video>
 
     <div class="main">
+        <!-- Main Background -->
+        <div class="main-background"></div>
+
+        <!-- Top Banner -->
+        <img class="top-banner" src="static/top-banner.png">
+
         <!-- Round Name -->
+        <img class="round-name-background" src="static/round-name-background.png">
         <div class="round-name" id="round-name">Round of 16</div>
 
         <!-- Team Section -->
         <div class="team-section left-team-section">
-            <div class="team-section-overlay left-team-section-overlay"></div>
-            <img class="banner left-team-banner" src="static/green banner.png">
-            <div class="team-name" id="left-team-name">Long Team Name Hello Its</div>
-            <div class="team-horizointal-rule left-team-horizontal-rule"></div>
-            <div class="team-star-container left-team-star-container" id="left-team-star-container"></div>
-            <img class="team-ban-image" src="static/green ban.png">
+            <img class="team-section-overlay" src="static/team-section-overlay/red-team-section-overlay.png">
+            <div class="team-name left-team-name" id="left-team-name">Long Team Name Hello Its</div>
+            <img class="team-points-background" src="static/points-background.png">
+            <div class="star-container red-star-container" id="red-star-container">
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-full.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-full.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-full.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-full.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-empty.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-empty.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-empty.png">
+                </div>
+            </div>
+            <img class="team-ban-image" src="static/bans/red-ban.png">
             <div class="team-ban-container" id="left-team-ban-container"></div>
             <div class="team-pick-container left-team-pick-container" id="left-team-pick-container"></div>
         </div>
         <div class="team-section right-team-section">
-            <div class="team-section-overlay right-team-section-overlay"></div>
-            <img class="banner right-team-banner" src="static/blue banner.png">
-            <div class="team-name" id="right-team-name">Long Team Name Hello Its</div>
-            <div class="team-horizointal-rule right-team-horizontal-rule"></div>
-            <div class="team-star-container right-team-star-container" id="right-team-star-container"></div>
-            <img class="team-ban-image" src="static/blue ban.png">
+            <img class="team-section-overlay" src="static/team-section-overlay/blue-team-section-overlay.png">
+            <div class="team-name right-team-name" id="right-team-name">Long Team Name Hello Its</div>
+            <img class="team-points-background" src="static/points-background.png">
+            <div class="star-container red-star-container" id="blue-star-container">
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-full.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-full.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-full.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-full.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-empty.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-empty.png">
+                </div>
+                <div class="star-wrapper">
+                    <img src="../_shared/assets/stars/star-empty.png">
+                </div>
+            </div>
+            <img class="team-ban-image" src="static/bans/blue-ban.png">
             <div class="team-ban-container" id="right-team-ban-container"></div>
             <div class="team-pick-container right-team-pick-container" id="right-team-pick-container"></div>
         </div>
 
         <!-- Borders -->
-        <div class="border top-border"></div>
-        <div class="border middle-border"></div>
         <div class="border bottom-border"></div>
 
         <!-- Chat Display -->
@@ -49,11 +100,6 @@
             <div class="chat-display-background"></div>
             <div class="chat-display-wrapper" id="chat-display-wrapper"></div>
         </div>
-
-        <!-- Logo animation -->
-        <video autoplay loop muted>
-            <source src="static/logoanimation.webm">
-        </video>
     </div>
 
     <!-- Sidebar -->
@@ -115,8 +161,6 @@
 
     <img class="preload-images" id="preload-images" src="">
 
-    <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
-    <script src="../_shared/utils.js"></script>
-    <script src="index.js"></script>
+    <script src="index.js" type="module"></script>
 </body>
 </html>
