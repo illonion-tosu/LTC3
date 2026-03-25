@@ -24,7 +24,7 @@ async function getBeatmaps() {
         case "Round of 32": case "Round of 16":
             currentBestOf = 9; break;
         case "Quarterfinals": case "Semifinals":
-            currentBestOf = 11; break;
+            currentBestOf = 13; break;
         case "Finals": case "Grand Finals":
             currentBestOf = 13; break;
     }

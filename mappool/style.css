@@ -8,10 +8,10 @@
 /* Main Background */
 .main-background {
     position: absolute;
-    width: 2063px;
-    height: 1343px;
-    top: -128px;
-    left: -80px;
+    width: 1949px;
+    height: 1223px;
+    top: -8px;
+    left: -4px;
     background-image: url("static/main-background.png")
 }
 
@@ -161,11 +161,11 @@
 .team-pick-container {
     position: absolute;
     top: 50%;
-    left: 607px;
+    left: 621px;
     transform: translateY(-50%);
     display: flex;
     gap: 17px;
-    width: 1285px;
+    width: 1278px;
 }
 
 /* Team Pick Wrapper */
@@ -173,10 +173,9 @@
     position: relative;
     flex-grow: 1;
     height: 321px;
-    border-radius: 44px;
+    background-image: url("static/map-card-background.png");
+    background-size: 100% 100%;
 }
-.left-team-pick-container .team-pick-wrapper { background-color: #2a5841; }
-.right-team-pick-container .team-pick-wrapper { background-color: #263573; }
 
 /* Team Pick Wrapper Outline */
 .team-pick-outline {
@@ -198,7 +197,6 @@
     border-radius: inherit;
     background-size: cover;
     background-position: center;
-    opacity: 0.4;
 }
 
 /* Team Pick Winner Crown */
