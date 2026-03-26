@@ -80,7 +80,6 @@ let chatLen
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
     const data = JSON.parse(event.data)
-    console.log(data)
 
     // Team Names
     if (currentRedTeamName !== data.tourney.team.left) {
@@ -159,13 +158,13 @@ socket.onmessage = event => {
         for (let i = 0; i < data.tourney.clients.length; i++) {
             const currentPlayerPlay = data.tourney.clients[i].play
             if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "combo") {
-                data.tourney.clients[i].team === "red"? currentRedScore += currentPlayerPlay.combo.max : currentBlueScore += currentPlayerPlay.combo.max
+                data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.combo.max : currentBlueScore += currentPlayerPlay.combo.max
             } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss") {
-                data.tourney.clients[i].team === "red"? currentRedScore += currentPlayerPlay.hits["0"] : currentBlueScore += currentPlayerPlay.hits["0"]
+                data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.hits["0"] : currentBlueScore += currentPlayerPlay.hits["0"]
             } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "acc") {
-                data.tourney.clients[i].team === "red"? currentRedScore += currentPlayerPlay.accuracy : currentBlueScore += currentPlayerPlay.accuracy
+                data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.accuracy : currentBlueScore += currentPlayerPlay.accuracy
             } else {
-                data.tourney.clients[i].team === "red"? currentRedScore += currentPlayerPlay.score : currentBlueScore += currentPlayerPlay.score
+                data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.score : currentBlueScore += currentPlayerPlay.score
             }
         }
 
@@ -326,8 +325,8 @@ socket.onmessage = event => {
 
         // Show who is winning
         let imageText = "none"
-        if (currentRedScore > currentBlueScore) imageText = "red"
-        else if (currentBlueScore > currentRedScore) imageText = "blue"
+        if (winning === "left") imageText = "red"
+        else if (winning === "right") imageText = "blue"
         bottomScoreBackgroundEl.setAttribute("src", `static/bottom-score-background/${imageText}-winning-background.png`)
 
     } else {

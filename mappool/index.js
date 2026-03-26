@@ -122,9 +122,7 @@ let currentPickTile, currentPickMap
 function mapClickEvent(event) {
     // Find map
     const currentMapId = this.dataset.id
-    console.log(currentMapId)
-    const currentMap = findBeatmapById(currentMapId)
-    console.log(currentMap)
+    currentMap = findBeatmapById(currentMapId)
     if (!currentMap) return
 
     // Team
@@ -247,7 +245,7 @@ socket.onmessage = event => {
             } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss") {
                 data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.hits["0"] : currentRightScore += currentPlayerPlay.hits["0"]
                 data.tourney.clients[i].team === "left"? currentLeftSecondaryScore += currentPlayerPlay.score : currentRightSecondaryScore += currentPlayerPlay.score
-            } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss") {
+            } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "acc") {
                 data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.accuracy : currentRightScore += currentPlayerPlay.accuracy
                 data.tourney.clients[i].team === "left"? currentLeftSecondaryScore += currentPlayerPlay.score : currentRightSecondaryScore += currentPlayerPlay.score
             } else {
@@ -287,8 +285,9 @@ socket.onmessage = event => {
             if (!currentPickTile) return
             currentPickTile.children[1].classList.add(`${winner === "red"? "left" : "right"}-team-pick-outline`)
             currentPickTile.children[1].classList.remove(`${winner === "red"? "right" : "left"}-team-pick-outline`)
-            currentPickTile.children[2].setAttribute("src", `static/${winner === "red"? "green" : "blue"} crown.png`)
+            currentPickTile.children[3].setAttribute("src", `static/${winner === "red"? "green" : "blue"} crown.png`)
             currentPickTile.children[4].setAttribute("src", `static/winner-overlay/${winner === "red"? "green" : "blue"}-winner-overlay.png`)
+            currentPickTile.children[4].style.opacity = 1
         }
     }
 }
@@ -604,7 +603,7 @@ function mappoolManagementSetBan() {
     if (mappoolManagementSetWhoseBanTeam === undefined || mappoolManagementSetWhoseBanNumber === undefined || mappoolManagementSelectedMap === undefined) return
 
     // Find which map
-    const currentMap = findBeatmapById(mappoolManagementSelectedMap)
+    currentMap = findBeatmapById(mappoolManagementSelectedMap)
     if (!currentMap) return
 
     // Find which container
