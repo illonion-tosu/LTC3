@@ -247,6 +247,15 @@
     color: white;
 }
 
+.team-pick-map-card-border {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    opacity: 0;
+}
+
 /* Chat Display */
 .chat-display {
     left: 25px;
