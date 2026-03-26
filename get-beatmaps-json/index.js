@@ -33,7 +33,7 @@ async function getBeatmaps() {
             // "audio_unavailable": responseJson[0].audio_unavailable,
             "beatmap_id": responseJson[0].beatmap_id,
             "beatmapset_id": responseJson[0].beatmapset_id,
-            // "bpm": responseJson[0].bpm,
+            "bpm": responseJson[0].bpm,
             // "count_normal": responseJson[0].count_normal,
             // "count_slider": responseJson[0].count_slider,
             // "count_spinner": responseJson[0].count_spinner,
@@ -70,13 +70,9 @@ async function getBeatmaps() {
             // "video": responseJson[0].video
         }
 
-        responseJson[0].identifier = allBeatmaps[i].identifier
         responseJson[0].mod = allBeatmaps[i].mod
         responseJson[0].order = allBeatmaps[i].order
-        responseJson[0].main_mods = allBeatmaps[i].main_mods
-        responseJson[0].mods = allBeatmaps[i].mods
-        responseJson[0].mod_customs = allBeatmaps[i].mod_customs
-        responseJson[0].multiplier = allBeatmaps[i].multiplier
+        responseJson[0].score_method = allBeatmaps[i].score_method
 
         allBeatmapsJson.push(responseJson[0])
     }

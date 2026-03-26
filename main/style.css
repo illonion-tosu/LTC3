@@ -1,7 +1,5 @@
 :root {
     --team-name-x: 48px;
-    --team-red-color: #D1ED85;
-    --team-blue-color: #AACAF9;
     --star-container-x: 52px;
     --gameplay-border-inner-x: 57.1px;
     --bottom-score-gradient-x: 293px;
@@ -264,6 +262,6 @@
     font-size: 11px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    width: 165px;
+    width: 166px;
     row-gap: 2px;
 }

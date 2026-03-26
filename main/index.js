@@ -1,6 +1,7 @@
 import { findBeatmap, loadBeatmaps } from "../_shared/core/beatmaps.js"
 import { updateChat } from "../_shared/core/chat.js"
 import { delay, getModDetails, setLengthDisplay } from "../_shared/core/utils.js"
+import { renderStars } from "../_shared/core/stars.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 // Load Beatmaps
@@ -112,7 +113,7 @@ socket.onmessage = event => {
                 currentMap.diff_approach,
                 currentMap.diff_overall,
                 currentMap.bpm,
-                currentMap.totalLength,
+                currentMap.total_length,
                 currentMap.mod
             )
 
@@ -176,7 +177,7 @@ socket.onmessage = event => {
 
         // Bar Width
         let barWidth
-        const currentScoreDelta = Math.abs(currentRedScore, currentBlueScore)
+        const currentScoreDelta = Math.abs(currentRedScore - currentBlueScore)
 
         if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "combo") {
             redScoreEl.style.opacity = 0
@@ -336,6 +337,8 @@ socket.onmessage = event => {
     }
 }
 
+const redTeamStarContainerEl = document.getElementById("red-team-star-container")
+const blueTeamStarContainerEl = document.getElementById("blue-team-star-container")
 setInterval(() => {
-    
+    renderStars(redTeamStarContainerEl, blueTeamStarContainerEl)
 }, 200)
