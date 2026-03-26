@@ -10,7 +10,7 @@ const rightTeamStarContainerEl = document.getElementById("blue-star-container")
 const roundNameEl = document.getElementById("round-name")
 const sidebarMappoolContainerEl = document.getElementById("sidebar-mappool-container")
 const preloadImagesEl = document.getElementById("preload-images")
-let currentBestOf, currentFirstTo, currentLeftStars = 0, currentRightStars = 0
+let currentBestOf, currentFirstTo
 let allBeatmaps, currentMap
 /**
  * Get all beatmaps from the beatmaps.json file
@@ -46,6 +46,7 @@ async function getBeatmaps() {
     function createTeamPickWrapper(side) {
         const teamPickWrapper = document.createElement("div")
         teamPickWrapper.classList.add("team-pick-wrapper")
+        teamPickWrapper.style.backgroundImage = `url("static/map-card-background/map-card-background-${currentBestOf}.png")`
         
         const teamPickBackgroundImage = document.createElement("div")
         teamPickBackgroundImage.classList.add("team-pick-background-image")
@@ -67,7 +68,7 @@ async function getBeatmaps() {
 
         const teamPickMapCardBorder = document.createElement("img")
         teamPickMapCardBorder.classList.add("team-pick-map-card-border")
-        teamPickMapCardBorder.setAttribute("src", "static/map-card-border/map-card-border.png")
+        teamPickMapCardBorder.setAttribute("src", `static/map-card-border/map-card-border-${currentBestOf}.png`)
 
         teamPickWrapper.append(teamPickBackgroundImage, teamPickBackgroundOverlay, teamPickOutline, teamPickWinnerCrown,
             teamPickWinnerOverlay, teamPickModId, teamPickMapCardBorder)

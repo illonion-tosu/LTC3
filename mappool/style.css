@@ -183,7 +183,7 @@
     position: relative;
     flex-grow: 1;
     height: 321px;
-    background-image: url("static/map-card-background.png");
+    background-image: url("static/map-card-background/map-card-background.png");
     background-size: 100% 100%;
 }
 
@@ -250,10 +250,10 @@
 
 .team-pick-map-card-border {
     position: absolute;
-    top: 5px;
-    left: 5px;
-    width: calc(100% - 10px);
-    height: calc(100% - 10px);
+    top: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
     opacity: 0;
 }
 

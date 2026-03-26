@@ -67,7 +67,7 @@ let scoreVisible
 // Score Bar Lines
 const scoreBarLineredEl = document.getElementById("score-bar-line-left")
 const scoreBarLineblueEl = document.getElementById("score-bar-line-right")
-// Bottom Score Background
+// Bottom Score Backgroundf
 const bottomScoreBackgroundEl = document.getElementById("bottom-score-background")
 
 // Chat information
@@ -82,12 +82,12 @@ socket.onmessage = event => {
     console.log(data)
 
     // Team Names
-    if (currentRedTeamName !== data.tourney.team.red) {
-        currentRedTeamName = data.tourney.team.red
+    if (currentRedTeamName !== data.tourney.team.left) {
+        currentRedTeamName = data.tourney.team.left
         redTeamNameEl.textContent = currentRedTeamName
     }
-    if (currentBlueTeamName !== data.tourney.team.blue) {
-        currentBlueTeamName = data.tourney.team.blue
+    if (currentBlueTeamName !== data.tourney.team.right) {
+        currentBlueTeamName = data.tourney.team.right
         blueTeamNameEl.textContent = currentBlueTeamName
     }
 
@@ -334,4 +334,8 @@ socket.onmessage = event => {
             chatLen = updateChat(chatLen, data.tourney.chat, chatDisplayContainerEl)
         }
     }
-}   
+}
+
+setInterval(() => {
+    
+}, 200)
