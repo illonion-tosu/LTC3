@@ -15,7 +15,7 @@ Promise.all([loadBeatmaps()]).then(([beatmaps]) => {
 // Teams
 const redTeamNameEl = document.getElementById("red-team-name")
 const blueTeamNameEl = document.getElementById("blue-team-name")
-let currentRedTeamName, currentBlueTeamName, foundBeatmapInMappool
+let currentRedTeamName, currentBlueTeamName, foundBeatmapInMappool, currentMap
 
 // Now Playing Detrails
 const nowPlayingBgEl = document.getElementById("now-playing-bg")
@@ -33,23 +33,40 @@ let currentMapId, currentMapChecksum
 
 // Score Section
 const scoreSectionEl = document.getElementById("score-section")
-// Score Texts
+// Score Difference Texts
 const scoreDifferenceEl = document.getElementById("score-difference")
+const scoreDifferenceComboEl = document.getElementById("score-difference-combo")
+const scoreDifferenceMissEl = document.getElementById("score-difference-miss")
+const scoreDifferenceAccEl = document.getElementById("score-difference-acc")
+// Score Texts
 const redScoreEl = document.getElementById("red-score")
 const blueScoreEl = document.getElementById("blue-score")
-let currentRedScore, currentBlueScore
-// Animations
-const animations = {
-    // Score
-    "redScore": new CountUp(redScoreEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
-    "blueScore": new CountUp(blueScoreEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
-    "scoreDifference": new CountUp(scoreDifferenceEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
+const redScoreComboEl = document.getElementById("red-score-combo")
+const blueScoreComboEl = document.getElementById("blue-score-combo")
+const redScoreMissEl = document.getElementById("red-score-miss")
+const blueScoreMissEl = document.getElementById("blue-score-miss")
+const redScoreAccEl = document.getElementById("red-score-acc")
+const blueScoreAccEl = document.getElementById("blue-score-acc")
+const animation = {
+    "redScore": new CountUp(redScoreEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." }),
+    "blueScore": new CountUp(blueScoreEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." }),
+    "scoreDifference": new CountUp(scoreDifferenceEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." }),
+    "redCombo": new CountUp(redScoreComboEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
+    "blueCombo": new CountUp(blueScoreComboEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
+    "scoreDifferenceCombo": new CountUp(scoreDifferenceComboEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
+    "redMiss": new CountUp(redScoreMissEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
+    "blueMiss": new CountUp(blueScoreMissEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
+    "scoreDifferenceMiss": new CountUp(scoreDifferenceMissEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
+    "redAcc": new CountUp(redScoreAccEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "%"}),
+    "blueAcc": new CountUp(blueScoreAccEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "%"}),
+    "scoreDifferenceAcc": new CountUp(scoreDifferenceAccEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "%"})
 }
+let currentRedScore, currentBlueScore
 // Score visible
 let scoreVisible
 // Score Bar Lines
-const scoreBarLineLeftEl = document.getElementById("score-bar-line-left")
-const scoreBarLineRightEl = document.getElementById("score-bar-line-right")
+const scoreBarLineredEl = document.getElementById("score-bar-line-left")
+const scoreBarLineblueEl = document.getElementById("score-bar-line-right")
 // Bottom Score Background
 const bottomScoreBackgroundEl = document.getElementById("bottom-score-background")
 
@@ -65,12 +82,12 @@ socket.onmessage = event => {
     console.log(data)
 
     // Team Names
-    if (currentRedTeamName !== data.tourney.team.left) {
-        currentRedTeamName = data.tourney.team.left
+    if (currentRedTeamName !== data.tourney.team.red) {
+        currentRedTeamName = data.tourney.team.red
         redTeamNameEl.textContent = currentRedTeamName
     }
-    if (currentBlueTeamName !== data.tourney.team.right) {
-        currentBlueTeamName = data.tourney.team.right
+    if (currentBlueTeamName !== data.tourney.team.blue) {
+        currentBlueTeamName = data.tourney.team.blue
         blueTeamNameEl.textContent = currentBlueTeamName
     }
 
@@ -78,7 +95,8 @@ socket.onmessage = event => {
     if ((currentMapId !== data.beatmap.id || currentMapChecksum !== data.beatmap.checksum) && allBeatmaps) {
         currentMapId = data.beatmap.id
         currentMapChecksum = data.beatmap.checksum
-        foundBeatmapInMappool = undefined
+        foundBeatmapInMappool = false
+        currentMap = undefined
 
         // Now Playing Details
         nowPlayingBgEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${data.beatmap.set}/covers/cover.jpg")`
@@ -86,18 +104,19 @@ socket.onmessage = event => {
         nowPlayingDifficultyEl.textContent = data.beatmap.version
         nowPlayingArtistEl.textContent = data.beatmap.artist
 
-        foundBeatmapInMappool = findBeatmap(currentMapId)
-        if (foundBeatmapInMappool) {
+        currentMap = findBeatmap(currentMapId)
+        if (currentMap) {
+            foundBeatmapInMappool = true
             const mapDetails = getModDetails(
-                foundBeatmapInMappool.diff_size,
-                foundBeatmapInMappool.diff_approach,
-                foundBeatmapInMappool.diff_overall,
-                foundBeatmapInMappool.bpm,
-                foundBeatmapInMappool.totalLength,
-                foundBeatmapInMappool.mod
+                currentMap.diff_size,
+                currentMap.diff_approach,
+                currentMap.diff_overall,
+                currentMap.bpm,
+                currentMap.totalLength,
+                currentMap.mod
             )
 
-            nowPlayingSrEl.textContent = Math.round(Number(foundBeatmapInMappool.difficultyrating) * 100) / 100
+            nowPlayingSrEl.textContent = Math.round(Number(currentMap.difficultyrating) * 100) / 100
             nowPlayingCsEl.textContent = Math.round(mapDetails.cs * 10) / 10
             nowPlayingBpmEl.textContent =Math.round(mapDetails.bpm)
             nowPlayingArEl.textContent = Math.round(mapDetails.ar * 10) / 10
@@ -110,7 +129,6 @@ socket.onmessage = event => {
 
     // Found Beatmap In Mappool
     if (!foundBeatmapInMappool) {
-        foundBeatmapInMappool = true
         nowPlayingSrEl.textContent = Math.round(data.beatmap.stats.stars.total * 10) / 10
         nowPlayingCsEl.textContent = Math.round(data.beatmap.stats.cs.converted * 10) / 10
         nowPlayingBpmEl.textContent = Math.round(data.beatmap.stats.bpm.common)
@@ -133,23 +151,184 @@ socket.onmessage = event => {
 
     // Set score details
     if (scoreVisible) {
-        currentRedScore = data.tourney.totalScore.left
-        currentBlueScore = data.tourney.totalScore.right
+        currentRedScore = 0
+        currentBlueScore = 0
 
-        // Animations
-        animations.redScore.update(currentRedScore)
-        animations.blueScore.update(currentBlueScore)
-        animations.scoreDifference.update(Math.abs(currentRedScore - currentBlueScore))
+        // Get scores for each team
+        for (let i = 0; i < data.tourney.clients.length; i++) {
+            const currentPlayerPlay = data.tourney.clients[i].play
+            if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "combo") {
+                data.tourney.clients[i].team === "red"? currentRedScore += currentPlayerPlay.combo.max : currentBlueScore += currentPlayerPlay.combo.max
+            } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss") {
+                data.tourney.clients[i].team === "red"? currentRedScore += currentPlayerPlay.hits["0"] : currentBlueScore += currentPlayerPlay.hits["0"]
+            } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "acc") {
+                data.tourney.clients[i].team === "red"? currentRedScore += currentPlayerPlay.accuracy : currentBlueScore += currentPlayerPlay.accuracy
+            } else {
+                data.tourney.clients[i].team === "red"? currentRedScore += currentPlayerPlay.score : currentBlueScore += currentPlayerPlay.score
+            }
+        }
 
-        // Score Bar Line
-        scoreBarLineLeftEl.style.width = `${currentRedScore / 2000000 * 960}px`
-        scoreBarLineRightEl.style.width = `${currentBlueScore / 2000000 * 960}px`
+        // Reduce accuracy
+        if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "acc") {
+            currentRedScore /= 2
+            currentBlueScore /= 2
+        }
+
+        // Bar Width
+        let barWidth
+        const currentScoreDelta = Math.abs(currentRedScore, currentBlueScore)
+
+        if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "combo") {
+            redScoreEl.style.opacity = 0
+            blueScoreEl.style.opacity = 0
+            redScoreComboEl.style.opacity = 1
+            blueScoreComboEl.style.opacity = 1
+            redScoreMissEl.style.opacity = 0
+            blueScoreMissEl.style.opacity = 0
+            redScoreAccEl.style.opacity = 0
+            blueScoreAccEl.style.opacity = 0
+
+            animation.redScore.update(0)
+            animation.blueScore.update(0)
+            animation.redCombo.update(currentRedScore)
+            animation.blueCombo.update(currentBlueScore)
+            animation.redMiss.update(0)
+            animation.blueMiss.update(0)
+            animation.redAcc.update(0)
+            animation.blueAcc.update(0)
+
+            scoreDifferenceEl.style.opacity = 0
+            scoreDifferenceComboEl.style.opacity = 1
+            scoreDifferenceMissEl.style.opacity = 0
+            scoreDifferenceAccEl.style.opacity = 0
+
+            animation.scoreDifference.update(0)
+            animation.scoreDifferenceCombo.update(currentScoreDelta)
+            animation.scoreDifferenceMiss.update(0)
+            animation.scoreDifferenceAcc.update(0)
+
+            barWidth = Math.min(currentScoreDelta / 50 * 960, 960)
+        } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss") {
+            redScoreEl.style.opacity = 0
+            blueScoreEl.style.opacity = 0
+            redScoreComboEl.style.opacity = 0
+            blueScoreComboEl.style.opacity = 0
+            redScoreMissEl.style.opacity = 1
+            blueScoreMissEl.style.opacity = 1
+            redScoreAccEl.style.opacity = 0
+            blueScoreAccEl.style.opacity = 0
+
+            animation.redScore.update(0)
+            animation.blueScore.update(0)
+            animation.redCombo.update(0)
+            animation.blueCombo.update(0)
+            animation.redMiss.update(currentRedScore)
+            animation.blueMiss.update(currentBlueScore)
+            animation.redAcc.update(0)
+            animation.blueAcc.update(0)
+
+            scoreDifferenceEl.style.opacity = 0
+            scoreDifferenceComboEl.style.opacity = 0
+            scoreDifferenceMissEl.style.opacity = 1
+            scoreDifferenceAccEl.style.opacity = 0
+
+            animation.scoreDifference.update(0)
+            animation.scoreDifferenceCombo.update(0)
+            animation.scoreDifferenceMiss.update(currentScoreDelta)
+            animation.scoreDifferenceAcc.update(0)
+
+            barWidth = Math.min(currentScoreDelta / 20 * 960, 960)
+        } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "acc") {
+            // Set Display
+            redScoreEl.style.opacity = 0
+            blueScoreEl.style.opacity = 0
+            redScoreComboEl.style.opacity = 0
+            blueScoreComboEl.style.opacity = 0
+            redScoreMissEl.style.opacity = 0
+            blueScoreMissEl.style.opacity = 0
+            redScoreAccEl.style.opacity = 1
+            blueScoreAccEl.style.opacity = 1
+
+            animation.redScore.update(0)
+            animation.blueScore.update(0)
+            animation.redCombo.update(0)
+            animation.blueCombo.update(0)
+            animation.redMiss.update(0)
+            animation.blueMiss.update(0)
+            animation.redAcc.update(currentRedScore)
+            animation.blueAcc.update(currentBlueScore)
+
+            scoreDifferenceEl.style.opacity = 0
+            scoreDifferenceComboEl.style.opacity = 0
+            scoreDifferenceMissEl.style.opacity = 0
+            scoreDifferenceAccEl.style.opacity = 1
+
+            animation.scoreDifference.update(0)
+            animation.scoreDifferenceCombo.update(0)
+            animation.scoreDifferenceMiss.update(0)
+            animation.scoreDifferenceAcc.update(currentScoreDelta)
+
+            // Bar Width
+            barWidth = Math.min(currentScoreDelta / 10 * 960, 960)
+        } else {
+            // Set Display
+            redScoreEl.style.opacity = 1
+            blueScoreEl.style.opacity = 1
+            redScoreComboEl.style.opacity = 0
+            blueScoreComboEl.style.opacity = 0
+            redScoreMissEl.style.opacity = 0
+            blueScoreMissEl.style.opacity = 0
+            redScoreAccEl.style.opacity = 0
+            blueScoreAccEl.style.opacity = 0
+
+            animation.redScore.update(currentRedScore)
+            animation.blueScore.update(currentBlueScore)
+            animation.redCombo.update(0)
+            animation.blueCombo.update(0)
+            animation.redMiss.update(0)
+            animation.blueMiss.update(0)
+            animation.redAcc.update(0)
+            animation.blueAcc.update(0)
+
+            scoreDifferenceEl.style.opacity = 1
+            scoreDifferenceComboEl.style.opacity = 0
+            scoreDifferenceMissEl.style.opacity = 0
+            scoreDifferenceAccEl.style.opacity = 0
+
+            animation.scoreDifference.update(currentScoreDelta)
+            animation.scoreDifferenceCombo.update(0)
+            animation.scoreDifferenceMiss.update(0)
+            animation.scoreDifferenceAcc.update(0)
+
+            // Bar Width
+            barWidth = Math.min(Math.pow(currentScoreDelta / 500000, 0.5) * 960, 960)
+        }
+
+        // Score Bar - Set who is winning
+        let winning = ""
+        if (currentRedScore === currentBlueScore) winning = "none"
+        else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss" && currentRedScore > currentBlueScore) winning = "right"
+        else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss" && currentRedScore < currentBlueScore) winning = "left"
+        else if (currentRedScore > currentBlueScore) winning = "left"
+        else if (currentBlueScore > currentRedScore) winning = "right"
+
+        if (winning === "left") {
+            scoreBarLineredEl.style.width = `${barWidth}px`
+            scoreBarLineblueEl.style.width = "0px"
+        } else if (winning === "right") {
+            scoreBarLineredEl.style.width = "0px"
+            scoreBarLineblueEl.style.width = `${barWidth}px`
+        } else if (winning === "none") {
+            scoreBarLineredEl.style.width = "0px"
+            scoreBarLineblueEl.style.width = "0px"
+        }
 
         // Show who is winning
         let imageText = "none"
         if (currentRedScore > currentBlueScore) imageText = "red"
         else if (currentBlueScore > currentRedScore) imageText = "blue"
         bottomScoreBackgroundEl.setAttribute("src", `static/bottom-score-background/${imageText}-winning-background.png`)
+
     } else {
         if (chatLen !== data.tourney.chat.length) {
             chatLen = updateChat(chatLen, data.tourney.chat, chatDisplayContainerEl)

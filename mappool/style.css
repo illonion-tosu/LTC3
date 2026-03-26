@@ -1,7 +1,7 @@
 :root {
     --ban-colour: #ff8888;
-    --green: #c3ff88;
-    --blue: #4a67dd;
+    --green: #D0EB8A;
+    --blue: #A9C8F5;
     --banner-horizontal-alignment: 500px;
 }
 
@@ -42,12 +42,21 @@
 }
 
 /* Border */
+.border-middle {
+    position: absolute;
+    top: 476px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 .border {
     position: absolute;
     width: 1920px;
-    height: 0px;
-    border: 3px solid #fff5d5;
+    height: 5px;
+    background-color: #fff5d5;
 }
+.top-border { top: 100px; }
+.middle-top-border { top: 470px; }
+.middle-bottom-border { top: 492px; }
 .bottom-border { top: 872px; }
 
 /* Team Section */
@@ -149,11 +158,11 @@
 /* Font Size: 40px for 1 ban, 30px for 2 bans*/
 .team-ban-mod-id {
     position: absolute;
-    top: 50%;
+    top: 53%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 40px;
-    line-height: 46px;
+    line-height: 35px;
     color: var(--ban-colour);
 }
 
@@ -199,12 +208,33 @@
     background-position: center;
 }
 
+/* Team Pick Overlay */
+.team-pick-background-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+}
+
 /* Team Pick Winner Crown */
 .team-pick-winner-crown {
     position: absolute;
     top: 25px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+/* Team Pick Winner overlay */
+.team-pick-winner-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 81px;
+    width: 100%;
+    opacity: 0;
 }
 
 /* Team Pick Mod Id */

@@ -29,7 +29,7 @@ async function getBeatmaps() {
         case "Round of 32": case "Round of 16":
             currentBestOf = 9; break;
         case "Quarterfinals": case "Semifinals":
-            currentBestOf = 13; break;
+            currentBestOf = 11; break;
         case "Finals": case "Grand Finals":
             currentBestOf = 13; break;
     }
@@ -49,16 +49,22 @@ async function getBeatmaps() {
         const teamPickBackgroundImage = document.createElement("div")
         teamPickBackgroundImage.classList.add("team-pick-background-image")
 
+        const teamPickBackgroundOverlay = document.createElement("div")
+        teamPickBackgroundOverlay.classList.add("team-pick-background-overlay")
+
         const teamPickOutline = document.createElement("div")
         teamPickOutline.classList.add("team-pick-outline")
 
         const teamPickWinnerCrown = document.createElement("img")
         teamPickWinnerCrown.classList.add("team-pick-winner-crown")
 
+        const teamPickWinnerOverlay = document.createElement("img")
+        teamPickWinnerOverlay.classList.add("team-pick-winner-overlay")
+
         const teamPickModId = document.createElement("div")
         teamPickModId.classList.add("team-pick-mod-id")
 
-        teamPickWrapper.append(teamPickBackgroundImage, teamPickOutline, teamPickWinnerCrown, teamPickModId)
+        teamPickWrapper.append(teamPickBackgroundImage, teamPickBackgroundOverlay, teamPickOutline, teamPickWinnerCrown, teamPickWinnerOverlay, teamPickModId)
         document.getElementById(`${side}-team-pick-container`).append(teamPickWrapper)
     }
 
@@ -152,7 +158,8 @@ function mapClickEvent(event) {
         currentPickTile = currentTile
         currentTile.dataset.id = currentMap.beatmap_id
         currentTile.children[0].style.backgroundImage =  `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
-        currentTile.children[3].innerText = `${currentMap.mod}${currentMap.order}`
+        currentTile.children[1].style.opacity = 1
+        currentTile.children[5].innerText = `${currentMap.mod}${currentMap.order}`
 
         document.cookie = `currentPicker=${team}; path=/`
         currentPickMap = currentMap
@@ -311,6 +318,7 @@ socket.onmessage = event => {
             currentPickTile.children[1].classList.add(`${winner === "red"? "left" : "right"}-team-pick-outline`)
             currentPickTile.children[1].classList.remove(`${winner === "red"? "right" : "left"}-team-pick-outline`)
             currentPickTile.children[2].setAttribute("src", `static/${winner === "red"? "green" : "blue"} crown.png`)
+            currentPickTile.children[4].setAttribute("src", `static/winner-overlay/${winner === "red"? "green" : "blue"}-winner-overlay.png`)
         }
     }
 }
@@ -756,7 +764,8 @@ function mappoolManagementSetPick() {
 
     currentTile.dataset.id = currentMap.beatmap_id
     currentTile.children[0].style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
-    currentTile.children[3].innerText = `${currentMap.mod}${currentMap.order}`
+    currentTile.children[1].style.opacity = 1
+    currentTile.children[5].innerText = `${currentMap.mod}${currentMap.order}`
     document.getElementById(`${currentMap.beatmap_id}`).dataset.pickTeam = "true"
 }
 
@@ -788,10 +797,11 @@ function mappoolManagementRemovePick() {
 
     currentTile.removeAttribute("data-id")
     currentTile.children[0].style.backgroundImage = ""
-    currentTile.children[1].classList.remove("left-team-pick-outline")
-    currentTile.children[1].classList.remove("right-team-pick-outline")
-    currentTile.children[2].setAttribute("src", "")
-    currentTile.children[3].innerText = ""
+    currentTile.children[1].style.opacity = 0
+    currentTile.children[2].classList.remove("left-team-pick-outline")
+    currentTile.children[2].classList.remove("right-team-pick-outline")
+    currentTile.children[3].setAttribute("src", "")
+    currentTile.children[5].innerText = ""
 }
 
 // Mappool Management Set Which Team
@@ -809,9 +819,11 @@ function mappoolManagementSetWinner() {
     if (!currentContainer) return
     const currentTile = currentContainer.children[mappoolManagementSetWhosePickNumber]
 
-    currentTile.children[1].classList.add(`${mappoolManagementSetWhichTeamTeam === "green"? "left" : "right"}-team-pick-outline`)
-    currentTile.children[1].classList.remove(`${mappoolManagementSetWhichTeamTeam === "green"? "right" : "left"}-team-pick-outline`)
-    currentTile.children[2].setAttribute("src", `static/${mappoolManagementSetWhichTeamTeam} crown.png`)
+    currentTile.children[2].classList.add(`${mappoolManagementSetWhichTeamTeam === "green"? "left" : "right"}-team-pick-outline`)
+    currentTile.children[2].classList.remove(`${mappoolManagementSetWhichTeamTeam === "green"? "right" : "left"}-team-pick-outline`)
+    currentTile.children[3].setAttribute("src", `static/${mappoolManagementSetWhichTeamTeam} crown.png`)
+    currentTile.children[4].setAttribute("src", `static/winner-overlay/${mappoolManagementSetWhichTeamTeam}-winner-overlay.png`)
+    currentTile.children[4].style.opacity = 1
 }
 
 // Mappool Managemnt Set Winner
@@ -823,10 +835,10 @@ function mappoolManagementRemoveWinner() {
     if (!currentContainer) return
     const currentTile = currentContainer.children[mappoolManagementSetWhosePickNumber]
 
-    currentTile.children[1].classList.remove("left-team-pick-outline")
-    currentTile.children[1].classList.remove("right-team-pick-outline")
-    currentTile.children[2].setAttribute("src", "")
-
+    currentTile.children[2].classList.remove("right-team-pick-outline")
+    currentTile.children[2].classList.remove("left-team-pick-outline")
+    currentTile.children[3].setAttribute("src", "")
+    currentTile.children[4].style.opacity = 0
 }
 
 // Buttons
