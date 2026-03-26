@@ -256,12 +256,6 @@
     opacity: 0;
 }
 
-/* Chat Display */
-.chat-display {
-    left: 25px;
-    bottom: 17px;
-}
-
 /* Sidebar */
 .sidebar {
     position: absolute;
@@ -362,4 +356,9 @@
 
 .preload-images {
     opacity: 0;
+}
+
+/* Chat Display */
+.chat-display {
+    height: 202px;
 }

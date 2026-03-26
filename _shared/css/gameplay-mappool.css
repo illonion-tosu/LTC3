@@ -1,0 +1,102 @@
+:root {
+    --gold-color: #FFF6C1;
+}
+
+/* Sunlight Dream */
+@font-face {
+    font-family: "Sunlight Dreams";
+    src: url("../../fonts/Sunlight\ Dreams.otf")
+}
+
+/* Video */
+video {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Main */
+.main {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    font-family: "Sunlight Dreams";
+}
+
+/* Star Container */
+.star-container {
+    position: absolute;
+    top: 107px;
+    display: flex;
+    gap: 16px;
+}
+.red-star-container { left: var(--star-container-x); }
+.blue-star-container {
+    right: var(--star-container-x);
+    flex-direction: row-reverse;
+}
+/* Star Wrapper */
+.star-wrapper {
+    --dimension: 38px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Chat Display */
+.chat-display {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 143px;
+    border: 5px solid var(--gold-color);
+    border-top: 0;
+    border-bottom: 0;
+    opacity: 1;
+    transition: 500ms ease-in-out;
+}
+.chat-display-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+}
+/* Chat Display Container */
+.chat-display-container {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    font-family: "Josefin Sans";
+    font-weight: 500;
+    color: white;
+    display: flex;
+    font-size: 1.25em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    flex-direction: column;
+    gap: 3px;
+}
+.chat-display-container::-webkit-scrollbar {
+    display: none;
+}
+/* Message Container */
+.message-container {
+    display: flex;
+    gap: 5px;
+}
+.message-name { white-space: nowrap; }
+.unknown { color: lightpink; }
+.bot { color: lightcoral; }
+.left { color: var(--team-red-color); }
+.right { color: var(--team-blue-color)}
