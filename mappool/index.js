@@ -1,5 +1,5 @@
 import { updateChat } from "../_shared/core/chat.js"
-import { setDefaultStarCount, toggleStars, updateStarCount } from "../_shared/core/stars.js"
+import { isStarOn, setDefaultStarCount, toggleStars, updateStarCount } from "../_shared/core/stars.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 // Team Stars
@@ -263,7 +263,7 @@ socket.onmessage = event => {
         if (ipcState === 4 && !checkedWinner) {
             checkedWinner = true
 
-            if (!isStarOn) return
+            if (!isStarOn()) return
             let winner = ""
             if (currentPickMap && currentPickMap.mod === "EX" && (currentPickMap.score_method === "combo" || currentPickMap.score_method === "acc")) {
                 if (currentLeftScore > currentRightScore) winner = "red"
@@ -312,21 +312,6 @@ function toggleAutopick() {
 // // Toggle Stars
 const toggleStarsEl = document.getElementById("toggle-stars")
 const toggleStarsTextEl = document.getElementById("toggle-stars-text")
-// let isStarOn = true
-// function toggleStars() {
-//     isStarOn = !isStarOn
-//     if (isStarOn) {
-//         leftTeamStarContainerEl.style.display = "flex"
-//         rightTeamStarContainerEl.style.display = "flex"
-//         toggleStarsEl.innerText = "Toggle Stars: ON"
-//     } else {
-//         leftTeamStarContainerEl.style.display = "none"
-//         rightTeamStarContainerEl.style.display = "none"
-//         toggleStarsEl.innerText = "Toggle Stars: OFF"
-//     }
-//     document.cookie = `toggleStars=${isStarOn}; path=/`
-// }
-// document.cookie = `toggleStars=${isStarOn}; path=/`
 
 // Mappool Management System
 const mappoolManagementSystemEl = document.getElementById("mappool-management-system")

@@ -1,7 +1,7 @@
 import { findBeatmap, loadBeatmaps } from "../_shared/core/beatmaps.js"
 import { updateChat } from "../_shared/core/chat.js"
 import { delay, getModDetails, setLengthDisplay } from "../_shared/core/utils.js"
-import { renderStars } from "../_shared/core/stars.js"
+import { renderStars, toggleStarContainers } from "../_shared/core/stars.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 // Load Beatmaps
@@ -341,4 +341,5 @@ const redTeamStarContainerEl = document.getElementById("red-team-star-container"
 const blueTeamStarContainerEl = document.getElementById("blue-team-star-container")
 setInterval(() => {
     renderStars(redTeamStarContainerEl, blueTeamStarContainerEl)
+    toggleStarContainers(redTeamStarContainerEl, blueTeamStarContainerEl)
 }, 200)
