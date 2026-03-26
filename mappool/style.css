@@ -77,7 +77,8 @@
 /* Team Name */
 .team-name {
     position: absolute;
-    top: 22px;
+    top: 94px;
+    transform: translateY(-50%);
     left: 93px;
     width: 475px;
     font-size: 70px;

@@ -1,3 +1,4 @@
+import { updateChat } from "../_shared/core/chat.js"
 import { setDefaultStarCount, toggleStars, updateStarCount } from "../_shared/core/stars.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
