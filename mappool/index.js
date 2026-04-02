@@ -199,10 +199,12 @@ socket.onmessage = event => {
     if (leftTeamName !== data.tourney.team.left) {
         leftTeamName = data.tourney.team.left
         leftTeamNameEl.innerText = leftTeamName
+        document.cookie = `leftTeamName=${leftTeamName}; path=/`
     }
     if (rightTeamName !== data.tourney.team.right) {
         rightTeamName = data.tourney.team.right
         rightTeamNameEl.innerText = rightTeamName
+        document.cookie = `rightTeamName=${rightTeamName}; path=/`
     }
 
     if (chatLen !== data.tourney.chat.length) {

@@ -49,6 +49,11 @@ function saveStarCount() {
     document.cookie = `firstTo=${firstTo}; path=/`
 }
 
+// Get Star Count
+export function getStarCount() {
+    return { "redStarCount": getCookie(redStarCount), "blueStarCount": getCookie(blueStarCount) }
+}
+
 // Set default star count
 export function setDefaultStarCount(bestOf, redTeamStarContainerEl, blueTeamStarContainerEl) {
     redStarCount = 0
