@@ -80,6 +80,7 @@ let chatLen
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
     const data = JSON.parse(event.data)
+    console.log(data)
 
     // Team Names
     if (currentRedTeamName !== data.tourney.team.left) {
@@ -156,14 +157,18 @@ socket.onmessage = event => {
 
         // Get scores for each team
         for (let i = 0; i < data.tourney.clients.length; i++) {
-            const currentPlayerPlay = data.tourney.clients[i].play
+            let currentPlayerPlay = data.tourney.clients[i].play
             if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "combo") {
                 data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.combo.max : currentBlueScore += currentPlayerPlay.combo.max
             } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss") {
                 data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.hits["0"] : currentBlueScore += currentPlayerPlay.hits["0"]
             } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "acc") {
                 data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.accuracy : currentBlueScore += currentPlayerPlay.accuracy
-            } else {
+            } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "score-hdpref") {
+                if (data.tourney.clients[i].play.mods.name.includes("HD")) { currentPlayerPlay /= 1.06 }
+                data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.score : currentBlueScore += currentPlayerPlay.score
+            } 
+            else {
                 data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.score : currentBlueScore += currentPlayerPlay.score
             }
         }

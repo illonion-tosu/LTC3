@@ -240,7 +240,7 @@ socket.onmessage = event => {
 
         // Get scores for each team
         for (let i = 0; i < data.tourney.clients.length; i++) {
-            const currentPlayerPlay = data.tourney.clients[i].play
+            let currentPlayerPlay = data.tourney.clients[i].play
             if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "combo") {
                 data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.combo.max : currentRightScore += currentPlayerPlay.combo.max
                 data.tourney.clients[i].team === "left"? currentLeftSecondaryScore += currentPlayerPlay.score : currentRightSecondaryScore += currentPlayerPlay.score
@@ -250,7 +250,11 @@ socket.onmessage = event => {
             } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "acc") {
                 data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.accuracy : currentRightScore += currentPlayerPlay.accuracy
                 data.tourney.clients[i].team === "left"? currentLeftSecondaryScore += currentPlayerPlay.score : currentRightSecondaryScore += currentPlayerPlay.score
-            } else {
+            } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "score-hdpref") {
+                if (data.tourney.clients[i].play.mods.name.includes("HD")) { currentPlayerPlay /= 1.06 }
+                data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.score : currentRightScore += currentPlayerPlay.score
+            } 
+            else {
                 data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.score : currentRightScore += currentPlayerPlay.score
             }
         }
