@@ -53,18 +53,22 @@
 .player-names-container {
     position: absolute;
     top: 621px;
-    left: 833px;
+    left: 1083px;
     font-family: "Josefin Sans";
     font-weight: 400;
     font-size: 46px;
     display: flex;
     color: white;
-    width: 1000px;
+    width: 500px;
     flex-wrap: wrap;
     justify-content: space-between;
-    row-gap: 10px;
+    row-gap: 40px;
+    justify-content: center;
 }
-
+.player-names-container > * {
+    width: 485px;
+    text-align: center;
+}
 /* Win Gradient */
 .win-gradient {
     position: absolute;

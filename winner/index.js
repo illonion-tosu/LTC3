@@ -20,6 +20,7 @@ let redStarCount, blueStarCount, currentStarCount, previousStarCount
 let currentWinningTeam, previousWinningTeam
 setInterval(() => {
     currentStarCount = getStarCount()
+    console.log(currentStarCount)
     if (previousStarCount !== currentStarCount) {
         previousStarCount = currentStarCount
         redStarCount = Number(currentStarCount.redStarCount)
@@ -39,14 +40,15 @@ setInterval(() => {
         // See if winning team is the same
         if (previousWinningTeam !== currentWinningTeam) {
             previousWinningTeam = currentWinningTeam
-            findTeam(currentWinningTeam)
+            const currentTeam = findTeam(currentWinningTeam)
 
             // Set player details
             playerNamesContainerEl.innerHTML = ""
-            playerNamesContainerEl.append(createDivElement(currentWinningTeam.team_player1))
-            playerNamesContainerEl.append(createDivElement(currentWinningTeam.team_player2))
-            if (currentWinningTeam.team_player3) {
-                playerNamesContainerEl.append(createDivElement(currentWinningTeam.team_player3))
+            playerNamesContainerEl.append(createDivElement(currentTeam.team_player1))
+            
+            playerNamesContainerEl.append(createDivElement(currentTeam.team_player2))
+            if (currentTeam.team_player3) {
+                playerNamesContainerEl.append(createDivElement(currentTeam.team_player3))
             }
         }
     }

@@ -51,7 +51,7 @@ function saveStarCount() {
 
 // Get Star Count
 export function getStarCount() {
-    return { "redStarCount": getCookie(redStarCount), "blueStarCount": getCookie(blueStarCount) }
+    return { "redStarCount": getCookie("redStarCount"), "blueStarCount": getCookie("blueStarCount") }
 }
 
 // Set default star count
