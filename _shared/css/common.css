@@ -28,3 +28,10 @@
     overflow: hidden;
     font-family: "Sunlight Dreams";
 }
+
+/* Video */
+video {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
