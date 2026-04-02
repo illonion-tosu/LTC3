@@ -1,0 +1,30 @@
+:root {
+    --gold-color: #FFF6C1;
+    --team-red-color: #D1ED85;
+    --team-blue-color: #AACAF9;
+}
+
+/* Sunlight Dream */
+@font-face {
+    font-family: "Sunlight Dreams";
+    src: url("../../fonts/Sunlight\ Dreams.otf")
+}
+
+/* Top Banner */
+.top-banner {
+    position: absolute;
+    left: 50%;
+    top: -128px;
+    transform: translateX(-50%);
+}
+
+/* Main */
+.main {
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    font-family: "Sunlight Dreams";
+}

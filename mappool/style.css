@@ -14,14 +14,6 @@
     left: -4px;
 }
 
-/* Top Banner */
-.top-banner {
-    position: absolute;
-    left: 50%;
-    top: -128px;
-    transform: translateX(-50%);
-}
-
 /* Round Name Background */
 .round-name-background {
     position: absolute;

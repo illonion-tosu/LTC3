@@ -1,31 +1,8 @@
-:root {
-    --gold-color: #FFF6C1;
-    --team-red-color: #D1ED85;
-    --team-blue-color: #AACAF9;
-}
-
-/* Sunlight Dream */
-@font-face {
-    font-family: "Sunlight Dreams";
-    src: url("../../fonts/Sunlight\ Dreams.otf")
-}
-
 /* Video */
 video {
     position: absolute;
     top: 0;
     left: 0;
-}
-
-/* Main */
-.main {
-    position: absolute;
-    width: 1920px;
-    height: 1080px;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    font-family: "Sunlight Dreams";
 }
 
 /* Star Container */
