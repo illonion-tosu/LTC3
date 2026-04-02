@@ -1,0 +1,8 @@
+.main-background {
+    position: absolute;
+    top: -120px;
+    left: -62px;
+    width: 2063px;
+    height: 2407px;
+    background-image: url(static/background.png);
+}
