@@ -359,6 +359,12 @@
 }
 
 /* Chat Display */
+#chat-display { 
+    left: unset;
+    right: 50%;
+}
+#twitch-chat-display { left: 50%; }
 .chat-display {
     height: 202px;
+    transform: unset;
 }
