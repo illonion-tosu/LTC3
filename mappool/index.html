@@ -148,7 +148,7 @@
                 </div>
             </div>
         </section>
-        <div class="divider"></div>
+        <div class="divider divider-1"></div>
         <section class="column column-2">
             <div class="sidebar-section">
                 <div class="sidebar-title">Set Star Status</div>
@@ -169,6 +169,24 @@
                     <option value="setWinner">Set Winner</option>
                     <option value="removeWinner">Remove Winner</option>
                 </select>
+            </div>
+        </section>
+        <div class="divider divider-2"></div>
+        <section class="column column-3">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Scene Management</div>
+                <div class="sidebar-button-container">
+                    <button id="auto-advance-button" class="full-length-button" style="height: 100px;">AUTO ADVANCE: OFF</button>
+                </div>
+                <div id="autoAdvanceTimer" class="controlLabel">
+                    <span id="autoAdvanceTimerLabel"></span> <span id="autoAdvanceTimerTime"></span>
+                </div><br>
+                <div class="sidebar-title">Scenes (click to override)</div>
+                <div id="sceneCollection">
+                    <template id="sceneButtonTemplate">
+                        <div class="full-length-button scene-button">SWITCH TO __SCENE_NAME__</div>
+                    </template>
+                </div>
             </div>
         </section>
     </div>

@@ -171,6 +171,10 @@ function mapClickEvent(event) {
         currentPickMap = currentMap
 
         this.dataset.pickTeam = "true"
+
+        if (enableAutoAdvance) {
+            scheduleSceneTransition(gameplay_scene_name, pick_to_transition_delay_ms);
+        }
     }
 }
 
@@ -295,6 +299,18 @@ socket.onmessage = event => {
             currentPickTile.children[4].setAttribute("src", `static/winner-overlay/${winner === "red"? "green" : "blue"}-winner-overlay.png`)
             currentPickTile.children[4].style.opacity = 1
         }
+    }
+
+    const firstTo = Number(getCookie("firstTo"))
+    const redStarCount = Number(getCookie("redStarCount"))
+    const blueStarCount = Number(getCookie("blueStarCount"))
+
+    if (ipcState === 4 && isStarOn() && enableAutoAdvance && redStarCount !== firstTo && blueStarCount !== firstTo) {
+        scheduleSceneTransition(mappool_scene_name, pick_to_transition_delay_ms)
+    } else if (ipcState === 4 && isStarOn() && enableAutoAdvance && (redStarCount === firstTo || blueStarCount == firstTo)) {
+        scheduleSceneTransition(winner_scene_name, pick_to_transition_delay_ms)
+    } else if ((ipcState === 2 || ipcState === 3) && enableAutoAdvance) {
+        scheduleSceneTransition(gameplay_scene_name, 0)
     }
 }
 
@@ -815,5 +831,77 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNextAutopickerBlueEl.addEventListener("click", () => updateNextAutoPicker('blue'))
     toggleAutopickEl.addEventListener("click", toggleAutopick)
     toggleStarsEl.addEventListener("click", () => toggleStars(toggleStarsTextEl, toggleStarsEl, leftTeamStarContainerEl, rightTeamStarContainerEl))
+    autoadvance_button.addEventListener("click", () => switchAutoAdvance())
     mappoolManagementSetActionEl.addEventListener("click", mappoolManagementSetAction)
 })
+
+// OBS Information
+const sceneCollection = document.getElementById("sceneCollection")
+let autoadvance_button = document.getElementById('auto-advance-button')
+let autoadvance_timer_container = document.getElementById('autoAdvanceTimer')
+let autoadvance_timer_label = document.getElementById('autoAdvanceTimerLabel')
+const pick_to_transition_delay_ms = 10000;
+let enableAutoAdvance = false
+const gameplay_scene_name = "Gameplay Scene"
+const mappool_scene_name = "Mappool Scene"
+const winner_scene_name = "Winner Scene"
+
+let sceneTransitionTimeoutID;
+
+autoadvance_timer_container.style.opacity = '0';
+
+
+function switchAutoAdvance() {
+    enableAutoAdvance = !enableAutoAdvance
+    if (enableAutoAdvance) {
+        autoadvance_button.innerText = 'AUTO ADVANCE: ON'
+    } else {
+        autoadvance_button.innerText = 'AUTO ADVANCE: OFF'
+    }
+}
+
+const obsGetCurrentScene = window.obsstudio?.getCurrentScene ?? (() => {})
+const obsGetScenes = window.obsstudio?.getScenes ?? (() => {})
+const obsSetCurrentScene = window.obsstudio?.setCurrentScene ?? (() => {})
+
+obsGetScenes(scenes => {
+    for (const scene of scenes) {
+        let clone = document.getElementById("sceneButtonTemplate").content.cloneNode(true)
+        let buttonNode = clone.querySelector('div')
+        buttonNode.id = `scene__${scene}`
+        buttonNode.textContent = `GO TO: ${scene}`
+        buttonNode.onclick = function() { obsSetCurrentScene(scene); }
+        sceneCollection.appendChild(clone)
+    }
+
+    obsGetCurrentScene((scene) => { document.getElementById(`scene__${scene.name}`).classList.add("active-scene") })
+})
+
+function scheduleSceneTransition(targetSceneName, delay) {
+    const createTransitionTask = (duration) => setTimeout(() => {
+        obsGetCurrentScene((currentScene) => {
+            if (currentScene.name === targetSceneName) {
+                autoadvance_timer_label.textContent = `Already on ${targetSceneName}\n`;
+                return;
+            }
+            obsSetCurrentScene(targetSceneName);
+            autoadvance_timer_container.style.opacity = '0';
+        });
+    }, duration)
+
+    // use global timeout for this overlay, the pick/ban style doesn't lend to repeated pick events so
+    // no point in idempotence
+    clearTimeout(sceneTransitionTimeoutID);
+    sceneTransitionTimeoutID = createTransitionTask(delay);
+
+    let autoadvance_timer_time = new CountUp('autoAdvanceTimerTime',
+        delay / 1000,
+        0,
+        1,
+        delay / 1000,
+        {useEasing: false, suffix: 's'}
+    );
+    autoadvance_timer_time.start();
+    autoadvance_timer_container.style.opacity = '1';
+    autoadvance_timer_label.textContent = `Switching to ${targetSceneName} in`;
+}
