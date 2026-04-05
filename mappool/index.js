@@ -6,7 +6,6 @@ import { createTosuWsSocket } from "../_shared/core/websocket.js"
 // Team Stars
 const leftTeamStarContainerEl = document.getElementById("red-star-container")
 const rightTeamStarContainerEl = document.getElementById("blue-star-container")
-
 // Get Beatmaps
 const roundNameEl = document.getElementById("round-name")
 const sidebarMappoolContainerEl = document.getElementById("sidebar-mappool-container")
@@ -300,18 +299,18 @@ socket.onmessage = event => {
             currentPickTile.children[4].setAttribute("src", `static/winner-overlay/${winner === "red"? "green" : "blue"}-winner-overlay.png`)
             currentPickTile.children[4].style.opacity = 1
         }
-    }
 
-    const firstTo = Number(getCookie("firstTo"))
-    const redStarCount = Number(getCookie("redStarCount"))
-    const blueStarCount = Number(getCookie("blueStarCount"))
+        const firstTo = Number(getCookie("firstTo"))
+        const redStarCount = Number(getCookie("redStarCount"))
+        const blueStarCount = Number(getCookie("blueStarCount"))
 
-    if (ipcState === 4 && isStarOn() && enableAutoAdvance && redStarCount !== firstTo && blueStarCount !== firstTo) {
-        scheduleSceneTransition(mappool_scene_name, pick_to_transition_delay_ms)
-    } else if (ipcState === 4 && isStarOn() && enableAutoAdvance && (redStarCount === firstTo || blueStarCount == firstTo)) {
-        scheduleSceneTransition(winner_scene_name, pick_to_transition_delay_ms)
-    } else if ((ipcState === 2 || ipcState === 3) && enableAutoAdvance) {
-        scheduleSceneTransition(gameplay_scene_name, 0)
+        if (ipcState === 4 && isStarOn() && enableAutoAdvance && redStarCount !== firstTo && blueStarCount !== firstTo) {
+            scheduleSceneTransition(mappool_scene_name, pick_to_transition_delay_ms)
+        } else if (ipcState === 4 && isStarOn() && enableAutoAdvance && (redStarCount === firstTo || blueStarCount == firstTo)) {
+            scheduleSceneTransition(winner_scene_name, pick_to_transition_delay_ms)
+        } else if ((ipcState === 2 || ipcState === 3) && enableAutoAdvance) {
+            scheduleSceneTransition(gameplay_scene_name, 0)
+        }
     }
 }
 
@@ -843,9 +842,9 @@ let autoadvance_timer_container = document.getElementById('autoAdvanceTimer')
 let autoadvance_timer_label = document.getElementById('autoAdvanceTimerLabel')
 const pick_to_transition_delay_ms = 10000;
 let enableAutoAdvance = false
-const gameplay_scene_name = "Gameplay Scene"
-const mappool_scene_name = "Mappool Scene"
-const winner_scene_name = "Winner Scene"
+const gameplay_scene_name = "Gameplay"
+const mappool_scene_name = "Mappool"
+const winner_scene_name = "Winner"
 
 let sceneTransitionTimeoutID;
 
