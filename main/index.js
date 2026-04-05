@@ -165,7 +165,7 @@ socket.onmessage = event => {
             } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "acc") {
                 data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.accuracy : currentBlueScore += currentPlayerPlay.accuracy
             } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "score-hdpref") {
-                if (data.tourney.clients[i].play.mods.name.includes("HD")) { currentPlayerPlay /= 1.06 }
+                if (data.tourney.clients[i].play.mods.name.includes("HD")) { currentPlayerPlay.score /= 1.06 }
                 data.tourney.clients[i].team === "left"? currentRedScore += currentPlayerPlay.score : currentBlueScore += currentPlayerPlay.score
             } 
             else {

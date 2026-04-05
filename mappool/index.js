@@ -1,5 +1,6 @@
 import { updateChat } from "../_shared/core/chat.js"
 import { isStarOn, setDefaultStarCount, toggleStars, updateStarCount } from "../_shared/core/stars.js"
+import { getCookie } from "../_shared/core/utils.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 // Team Stars
@@ -255,7 +256,7 @@ socket.onmessage = event => {
                 data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.accuracy : currentRightScore += currentPlayerPlay.accuracy
                 data.tourney.clients[i].team === "left"? currentLeftSecondaryScore += currentPlayerPlay.score : currentRightSecondaryScore += currentPlayerPlay.score
             } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "score-hdpref") {
-                if (data.tourney.clients[i].play.mods.name.includes("HD")) { currentPlayerPlay /= 1.06 }
+                if (data.tourney.clients[i].play.mods.name.includes("HD")) { currentPlayerPlay.score /= 1.06 }
                 data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.score : currentRightScore += currentPlayerPlay.score
             } 
             else {
